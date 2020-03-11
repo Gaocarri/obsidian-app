@@ -4,6 +4,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 
+import Icon from '@/components/Icon.vue'
+import Layout from '@/components/Layout.vue'
+
+Vue.component('Icon', Icon)
+Vue.component('Layout', Layout)
+
 Vue.config.productionTip = false
 
 new Vue({

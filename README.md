@@ -1,24 +1,113 @@
-# obsidian-app
+# 黑曜石记账
 
-## Project setup
-```
-yarn install
+...
+
+# 路由配置
+
+1.使用VueRouter配置路由
+
+```typescript
+const routes = [
+  {
+    path: '/',
+    redirect: '/money'
+  },
+  {
+    path: '/money',
+    component: Money
+  },
+  {
+    path: '/add',
+    component: Add
+  },
+  {
+    path: '/statistics',
+    component: Statistics
+  }
+]
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+# Nav.vue 底部导航栏的封装
 
-### Compiles and minifies for production
-```
-yarn build
-```
+1. svg的使用（使用svg-sprite-loader）
 
-### Run your unit tests
-```
-yarn test:unit
-```
+   - iconfont.con下载svg
+   - shims-tsx.d.ts中添加
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+   ```
+   declare module '*.svg' {
+     const content: string;
+     export default content
+   }
+   ```
+
+   - 安装 svg-sprite-loader(命令行输入)
+
+   ```javascript
+   yarn add svg-sprite-loader -D
+   yarn add svgo-loader
+   ```
+
+   - 在vue.config.js里面添加
+
+     ```javascript
+     module.exports = {
+       lintOnSave: false,
+       chainWebpack: config => {
+         const dir = path.resolve(__dirname, 'src/assets/icons')
+     
+         config.module
+           .rule('svg-sprite')
+           .test(/\.svg$/)
+           .include.add(dir).end() //包含icons目录
+           .use('svg-sprite-loader').loader('svg-sprite-loader').options({ extract: false }).end()
+         config.plugin('svg-sprite').use(require('svg-sprite-loader/plugin'), [{ plainSprite: true }])
+         config.module.rule('svg').exclude.add(dir) //其他svg loader排除icons
+       }
+     }
+     ```
+
+   - 封装Icon.vue
+
+   ```typescript
+   <template>
+     <svg class="icon">
+       <use :xlink:href="'#'+name" />
+     </svg>
+   </template>
+   
+   <script lang="ts">
+   // 引入整个icons
+   const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
+     requireContext.keys().forEach(requireContext);
+   try {
+     importAll(require.context("../assets/icons", true, /\.svg$/));
+   } catch (error) {
+     console.log(error);
+   }
+   
+   export default {
+     name: "Icon",
+     props: ["name"]
+   };
+   </script>
+   
+   <style lang="scss" scoped>
+   .icon {
+     width: 1em;
+     height: 1em;
+     vertical-align: -0.15em;
+     fill: currentColor;
+     overflow: hidden;
+   }
+   </style>
+   ```
+
+   * main.ts将Icon变为全局组件
+
+   ```
+   import Icon from '@/components/Icon.vue'
+   Vue.component('Icon', Icon)
+   ```
+
+   
