@@ -2,6 +2,7 @@
   <div>
     <Layout>
       <money-head></money-head>
+      <money-today></money-today>
     </Layout>
   </div>
 </template>
@@ -11,10 +12,12 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 import MoneyHead from "@/components/money/MoneyHead.vue";
+import MoneyToday from "@/components/money/MoneyToday.vue";
 
 @Component({
   components: {
-    MoneyHead
+    MoneyHead,
+    MoneyToday
   }
 })
 export default class Money extends Vue {}
