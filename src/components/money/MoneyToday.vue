@@ -2,8 +2,8 @@
   <header>
     <div class="date">2020年3月11日</div>
     <div class="balance">
-      <span>支出：100.00</span>
-      <span>收入：200.00</span>
+      <span class="balance-expend">支出:100.00</span>
+      <span>收入:200.00</span>
     </div>
   </header>
 </template>
@@ -24,10 +24,11 @@ header {
   padding: 6px 6px;
   display: flex;
   justify-content: space-between;
-  .date {
-  }
 
   .balance {
+    &-expend {
+      margin-right: 8px;
+    }
   }
 }
 </style>

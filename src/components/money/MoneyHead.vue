@@ -6,13 +6,13 @@
       <span class="des-money">3月结余</span>
     </div>
     <div class="detail">
-      <div class="income">
-        <span>0.00</span>
-        <span class="des-money">3月收入</span>
-      </div>
-      <div class="expend">
+      <div>
         <span>0.00</span>
         <span class="des-money">3月支出</span>
+      </div>
+      <div>
+        <span>0.00</span>
+        <span class="des-money">3月收入</span>
       </div>
     </div>
   </header>
@@ -58,6 +58,7 @@ header {
     flex-wrap: nowrap;
     margin-bottom: 10px;
     position: relative;
+
     &::after {
       @extend %clearFix;
       content: "";
@@ -69,13 +70,8 @@ header {
       top: 50%;
       margin-top: -15px;
     }
-    .income {
-      display: flex;
-      flex-direction: column;
-      min-width: 50vw;
-    }
 
-    .expend {
+    > div {
       display: flex;
       flex-direction: column;
       min-width: 50vw;

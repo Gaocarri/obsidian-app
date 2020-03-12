@@ -4,8 +4,8 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 
-import Icon from '@/components/Icon.vue'
-import Layout from '@/components/Layout.vue'
+import Icon from '@/components/common/Icon.vue'
+import Layout from '@/components/common/Layout.vue'
 
 Vue.component('Icon', Icon)
 Vue.component('Layout', Layout)
