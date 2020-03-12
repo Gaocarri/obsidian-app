@@ -48,24 +48,26 @@ const routes = [
    yarn add svgo-loader
    ```
 
-   - 在vue.config.js里面添加
+   - 在vue.config.js里面添加，启用两个loder
 
-     ```javascript
-     module.exports = {
-       lintOnSave: false,
-       chainWebpack: config => {
-         const dir = path.resolve(__dirname, 'src/assets/icons')
-     
-         config.module
-           .rule('svg-sprite')
-           .test(/\.svg$/)
-           .include.add(dir).end() //包含icons目录
-           .use('svg-sprite-loader').loader('svg-sprite-loader').options({ extract: false }).end()
-         config.plugin('svg-sprite').use(require('svg-sprite-loader/plugin'), [{ plainSprite: true }])
-         config.module.rule('svg').exclude.add(dir) //其他svg loader排除icons
-       }
+   ```
+   module.exports = {
+     lintOnSave: false,
+     chainWebpack: config => {
+       const dir = path.resolve(__dirname, 'src/assets/icons')
+   
+       config.module
+         .rule('svg-sprite')
+         .test(/\.svg$/)
+         .include.add(dir).end() //包含icons目录
+         .use('svg-sprite-loader').loader('svg-sprite-loader').options({ extract: false }).end()
+       config.plugin('svg-sprite').use(require('svg-sprite-loader/plugin'), [{ plainSprite: true }])
+       config.module.rule('svg').exclude.add(dir) //其他svg loader排除icons
      }
-     ```
+   }
+   ```
+
+   
 
    - 封装Icon.vue
 
@@ -108,6 +110,54 @@ const routes = [
    ```
    import Icon from '@/components/Icon.vue'
    Vue.component('Icon', Icon)
+   ```
+
+   2.封装nav.vue,通过url判断路由是否活跃以显示不同的icon(使用v-show显示)
+
+   ```
+   <script lang='ts'>
+   import Vue from "vue";
+   import { Component } from "vue-property-decorator";
+   
+   @Component
+   export default class Nav extends Vue {
+     get moneyIsActive() {
+       return this.$route.path.indexOf("money") !== -1;
+     }
+     get statisticsIsActive() {
+       return this.$route.path.indexOf("statistics") !== -1;
+     }
+   }
+   </script>
+   ```
+
+   
+
+   # 封装Layout.vue
+
+   1.使Nav居于页面下方的方式
+
+   ```
+   <template>
+     <div class="layout-wrapper">
+       <div class="content">
+         <slot />
+       </div>
+       <Nav class="nav" />
+     </div>
+   </template>
+   
+   <style lang='scss' scoped>
+   .layout-wrapper {
+     display: flex;
+     flex-direction: column;
+     min-height: 100vh;
+     > .content {
+       overflow: auto;
+       flex: 1;
+     }
+   }
+   </style>
    ```
 
    
