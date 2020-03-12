@@ -1,18 +1,18 @@
 <template>
   <header>
-    <div class="title">2020年3月</div>
+    <div class="title">2020年3月!</div>
     <div class="balance">
-      <span class="balance-money">300.00</span>
-      <span class="des-money">3月结余</span>
+      <span class="balance-money">300.00!</span>
+      <span class="des-money">3!月结余</span>
     </div>
     <div class="detail">
       <div>
-        <span>0.00</span>
-        <span class="des-money">3月支出</span>
+        <span>0.00!</span>
+        <span class="des-money">3!月支出</span>
       </div>
       <div>
-        <span>0.00</span>
-        <span class="des-money">3月收入</span>
+        <span>0.00!</span>
+        <span class="des-money">3!月收入</span>
       </div>
     </div>
   </header>
