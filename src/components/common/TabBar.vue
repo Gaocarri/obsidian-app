@@ -30,8 +30,15 @@ export default class extends Vue {
   text-align: center;
   font-size: 20px;
   margin-top: 10px;
-  padding: 0 20px;
   position: relative;
+  .icon {
+    position: absolute;
+    left: 10px;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    margin-top: -9px;
+  }
   span {
     padding: 10px;
   }

@@ -1,9 +1,9 @@
 <template>
   <div>
     <Layout>
-      <money-head></money-head>
-      <money-today></money-today>
-      <money-content></money-content>
+      <money-head />
+      <money-today />
+      <money-content />
     </Layout>
   </div>
 </template>
