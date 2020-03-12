@@ -60,7 +60,6 @@ header {
     position: relative;
 
     &::after {
-      @extend %clearFix;
       content: "";
       display: block;
       width: 50vw;

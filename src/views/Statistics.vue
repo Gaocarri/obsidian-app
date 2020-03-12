@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Layout>统计页面</Layout>
+    <Layout>
+      <Tab-bar />
+    </Layout>
   </div>
 </template>
 
@@ -8,7 +10,13 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
-@Component
+import TabBar from "@/components/common/TabBar.vue";
+
+@Component({
+  components: {
+    TabBar
+  }
+})
 export default class Statistics extends Vue {}
 </script>
 
