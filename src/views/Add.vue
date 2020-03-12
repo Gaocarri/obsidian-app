@@ -1,7 +1,7 @@
 <template>
   <div>
     <tab-bar>
-      <Icon name="back" class="back" @click.native="back" />
+      <Icon name="back" @click.native="back" />
     </tab-bar>
   </div>
 </template>

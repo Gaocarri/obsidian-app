@@ -62,10 +62,10 @@ header {
     &::after {
       content: "";
       display: block;
+      position: absolute;
       width: 50vw;
       height: 30px;
       border-right: 1px solid white;
-      position: absolute;
       top: 50%;
       margin-top: -15px;
     }

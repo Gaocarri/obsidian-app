@@ -29,28 +29,28 @@ const routes = [
 
 # Nav.vue 底部导航栏的封装
 
-1. svg的使用（使用svg-sprite-loader）
+2. 1. svg的使用（使用svg-sprite-loader）
 
-   - iconfont.con下载svg
-   - shims-tsx.d.ts中添加
+- iconfont.con下载svg
+- shims-tsx.d.ts中添加
 
-   ```
-   declare module '*.svg' {
-     const content: string;
-     export default content
-   }
-   ```
+```
+declare module '*.svg' {
+  const content: string;
+  export default content
+}
+```
 
-   - 安装 svg-sprite-loader(命令行输入)
+- 安装 svg-sprite-loader(命令行输入)
 
-   ```javascript
-   yarn add svg-sprite-loader -D
-   yarn add svgo-loader
-   ```
+```javascript
+yarn add svg-sprite-loader -D
+yarn add svgo-loader
+```
 
-   - 在vue.config.js里面添加，启用两个loder
+- 在vue.config.js里面添加，启用两个loder
 
-   ```
+```
    module.exports = {
      lintOnSave: false,
      chainWebpack: config => {
@@ -65,13 +65,13 @@ const routes = [
        config.module.rule('svg').exclude.add(dir) //其他svg loader排除icons
      }
    }
-   ```
+```
 
    
 
-   - 封装Icon.vue
+- 封装Icon.vue
 
-   ```typescript
+```typescript
    <template>
      <svg class="icon">
        <use :xlink:href="'#'+name" />
@@ -103,18 +103,18 @@ const routes = [
      overflow: hidden;
    }
    </style>
-   ```
+```
 
-   * main.ts将Icon变为全局组件
+* main.ts将Icon变为全局组件
 
-   ```
+```
    import Icon from '@/components/Icon.vue'
    Vue.component('Icon', Icon)
-   ```
+```
 
    2.封装nav.vue,通过url判断路由是否活跃以显示不同的icon(使用v-show显示)
 
-   ```
+```
    <script lang='ts'>
    import Vue from "vue";
    import { Component } from "vue-property-decorator";
@@ -129,16 +129,14 @@ const routes = [
      }
    }
    </script>
-   ```
+```
 
-   
+# Layout.vue的封装
 
-   # 封装Layout.vue
+1.使Nav居于页面下方的方式
 
-   1.使Nav居于页面下方的方式
-
-   ```
-   <template>
+```
+<template>
      <div class="layout-wrapper">
        <div class="content">
          <slot />
@@ -158,6 +156,66 @@ const routes = [
      }
    }
    </style>
-   ```
+```
 
-   
+# Money.vue
+
+1. 封装MoneyHead.vue,MoneyToday.vue和MoneyContent.vue并引入Money
+
+```
+   <template>
+     <div>
+       <Layout>
+         <money-head />
+         <money-today />
+         <money-content />
+       </Layout>
+     </div>
+   </template>
+```
+
+# TabBar的封装
+
+1.获得选中状态(添加 class selected)
+
+```vue
+<span class="expend" :class="{'selected':type==='-'}" @click="selectExpend">
+	支出
+</span>
+<span class="income" :class="{'selected':type==='+'}" @click="selectIncome">
+	收入
+</span>
+
+export default class extends Vue {
+  type: string = "+";
+
+  selectExpend() {
+    this.type = "-";
+  }
+  selectIncome() {
+    this.type = "+";
+  }
+}
+```
+
+2. slot插槽添加可能的Icon,并使它绝对定位
+
+```
+<div class="icon">
+    <slot />
+ </div>
+ 
+   .icon {
+    position: absolute;
+    left: 10px;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    margin-top: -9px;
+  }
+```
+
+
+
+
+
