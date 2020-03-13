@@ -25,6 +25,7 @@ export default class Layout extends Vue {}
 .layout-wrapper {
   display: flex;
   flex-direction: column;
+  overflow: auto;
   height: 100vh;
   > .content {
     overflow: auto;

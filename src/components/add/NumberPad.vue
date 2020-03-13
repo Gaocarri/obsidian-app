@@ -29,6 +29,23 @@
   </div>
 </template>
 
+
+
+
+<script lang='ts'>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+@Component
+export default class NotePad extends Vue {
+  inputContent() {}
+  back() {}
+  add() {}
+  increment() {}
+  ok() {}
+}
+</script>
+
 <style lang='scss' scoped>
 @import "~@/assets/style/reset.scss";
 
@@ -60,7 +77,7 @@
     }
     .notes {
       padding-left: 6px;
-      margin-right: 14px;
+      margin-right: 20px;
       input {
         width: 32vw;
         border: none;
@@ -76,11 +93,11 @@
     button {
       float: left;
       width: 25%;
-      height: 64px;
+      height: 54px;
       background-color: transparent;
       border: none;
       &.ok {
-        height: 64 * 2px;
+        height: 54 * 2px;
         float: right;
       }
       &:nth-child(1),
@@ -117,19 +134,3 @@
   }
 }
 </style>
-
-
-<script lang='ts'>
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-
-@Component
-export default class NotePad extends Vue {
-  inputContent() {}
-  back() {}
-  add() {}
-  increment() {}
-  ok() {}
-}
-</script>
-

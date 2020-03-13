@@ -18,9 +18,9 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-// 页面加载后默认滚动到最下方以显示Nav
-window.onload = function () {
-  setTimeout(function () {
-    window.scrollTo(0, 10000)
-  }, 0)
-} 
+// // 页面加载后默认滚动到最下方以显示Nav
+// window.onload = function () {
+//   setTimeout(function () {
+//     window.scrollTo(0, 10000)
+//   }, 0)
+// } 

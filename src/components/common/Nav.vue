@@ -33,6 +33,10 @@ export default class Nav extends Vue {
 
 <style lang='scss' scoped>
 nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   border-top: 0.5px solid #bbb;
   padding: 6px 0;
   display: flex;
