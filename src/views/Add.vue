@@ -3,6 +3,9 @@
     <tab-bar>
       <Icon name="back" @click.native="back" />
     </tab-bar>
+    <div class="number-pad">
+      <NumberPad />
+    </div>
   </div>
 </template>
 
@@ -11,10 +14,12 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 import TabBar from "@/components/common/TabBar.vue";
+import NumberPad from "@/components/add/NumberPad.vue";
 
 @Component({
   components: {
-    TabBar
+    TabBar,
+    NumberPad
   }
 })
 export default class Add extends Vue {
@@ -25,4 +30,10 @@ export default class Add extends Vue {
 </script>
 
 <style lang='scss' scoped>
+.numberPad {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 </style>
