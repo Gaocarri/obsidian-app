@@ -20,12 +20,15 @@ export default class TagSelected extends Vue {
 
 <style lang='scss' scoped>
 .selected-tag {
+  background: #fff;
+  width: 100vw;
   display: flex;
   font-size: 16px;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
   margin-bottom: 10px;
+  border-bottom: 1px solid #bbb;
   .chosed-tag {
     display: flex;
     align-items: center;

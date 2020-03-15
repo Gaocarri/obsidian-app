@@ -26,15 +26,13 @@ export default class tagsNav extends Vue {
 
 <style lang='scss' scoped>
 header {
+  background: #fff;
   font-size: 20px;
   text-align: center;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #bbb;
   padding: 10px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
   .back {
-    vertical-align: center;
     width: 18px;
     height: 18px;
   }
