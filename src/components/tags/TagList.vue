@@ -3,7 +3,12 @@
     <header>{{tagList[0].name}}</header>
     <ul class="icons">
       <li v-for="tag in tagList" :key="tag.id">
-        <Icon class="icon" :name="tag.name" @click.native="selectTag(tag)" />
+        <Icon
+          class="icon"
+          :name="tag.name"
+          @click.native="selectTag(tag)"
+          :class="{'selected':selectedTag.id===tag.id}"
+        />
         <span>{{tag.name}}</span>
       </li>
     </ul>
@@ -17,6 +22,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class TagList extends Vue {
   @Prop() readonly tagList!: Tag[];
+  @Prop({ default: { name: "餐饮", id: 1 }, type: Object }) selectedTag?: Tag;
 
   selectTag(tag: Tag) {
     this.$emit("selectTag", tag);
@@ -54,6 +60,10 @@ header {
       padding: 10px;
       border-radius: 50%;
       margin-bottom: 4px;
+      &.selected {
+        color: #fff;
+        background: #000;
+      }
     }
     span {
       font-size: 14px;

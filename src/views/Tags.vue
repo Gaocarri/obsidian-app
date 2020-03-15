@@ -2,7 +2,7 @@
   <div>
     <Tags-nav />
     <Tag-selected :selectedTag="selectedTag"></Tag-selected>
-    <Tag-list :tagList="foodList" @selectTag="selectTag"></Tag-list>
+    <Tag-list :tagList="foodList" @selectTag="selectTag" :selectedTag="selectedTag"></Tag-list>
   </div>
 </template>
 
