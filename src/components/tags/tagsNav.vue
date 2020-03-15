@@ -32,7 +32,6 @@ header {
   justify-content: space-between;
   border-bottom: 1px solid #bbb;
   padding: 10px;
-  margin-bottom: 10px;
   .back {
     vertical-align: center;
     width: 18px;
