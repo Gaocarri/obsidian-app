@@ -22,7 +22,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class TagList extends Vue {
   @Prop() readonly tagList!: Tag[];
-  @Prop({ default: { name: "餐饮", id: 1 }, type: Object }) selectedTag?: Tag;
+  @Prop() selectedTag?: Tag;
 
   selectTag(tag: Tag) {
     this.$emit("selectTag", tag);
@@ -41,6 +41,7 @@ header {
   width: 100vw;
   text-align: center;
   margin-bottom: 6px;
+  font-weight: 700;
 }
 
 .icons {
