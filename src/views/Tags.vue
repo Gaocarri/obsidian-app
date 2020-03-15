@@ -42,6 +42,8 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
+import { foodList } from "@/constants/tagList";
+
 import TagsNav from "@/components/tags/tagsNav.vue";
 import TagSelected from "@/components/tags/TagSelected.vue";
 
@@ -57,14 +59,7 @@ export default class Tags extends Vue {
     id: 1
   };
 
-  foodList: Tag[] = [
-    { name: "餐饮", id: 1 },
-    { name: "正餐", id: 2 },
-    { name: "外卖", id: 3 },
-    { name: "蔬菜", id: 4 },
-    { name: "零食", id: 5 },
-    { name: "酒水", id: 6 }
-  ];
+  foodList = foodList;
 
   selectTag(tag: Tag) {
     this.selectedTag.name = tag.name;

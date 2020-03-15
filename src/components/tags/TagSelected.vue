@@ -15,9 +15,6 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class TagSelected extends Vue {
   @Prop({ default: { name: "餐饮", id: 1 }, type: Object }) selectedTag?: Tag;
-  updated() {
-    console.log(this.selectedTag);
-  }
 }
 </script>
 
