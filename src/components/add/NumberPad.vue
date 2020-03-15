@@ -29,9 +29,6 @@
   </div>
 </template>
 
-
-
-
 <script lang='ts'>
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
@@ -52,44 +49,29 @@ export default class NotePad extends Vue {
 .numberPad {
   header {
     display: flex;
-    text-align: left;
-    height: 30px;
-    line-height: 30px;
-    align-items: center;
-    position: relative;
-    &::before {
-      content: "";
-      display: block;
-      width: 100vw;
-      height: 3px;
-      border-top: 1px solid #eee;
-      position: absolute;
-      top: -4px;
-    }
-    &::after {
-      content: "";
-      display: block;
-      height: 38px;
-      width: 40px;
-      border-left: 1px solid #eee;
-      position: absolute;
-      left: 50%;
-    }
+    justify-content: space-between;
     .notes {
-      padding-left: 6px;
-      margin-right: 20px;
+      flex: 1;
+      border-top: 1px solid #eee;
+      padding: 6px;
       input {
-        width: 32vw;
-        border: none;
-        overflow: auto;
-        color: #aaa;
+        background: none;
+        outline: none;
+        border: 0px;
+        width: 30vw;
+        color: #bbb;
       }
+    }
+    .output {
+      padding: 6px;
+      border-top: 1px solid #eee;
+      border-left: 1px solid #eee;
+      flex: 1;
     }
   }
   .buttons {
     @extend %clearFix;
     font-size: 20px;
-    margin-top: 4px;
     button {
       float: left;
       width: 25%;

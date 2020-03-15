@@ -149,7 +149,7 @@ export default class Add extends Vue {
   overflow: auto;
 }
 .number-pad {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
