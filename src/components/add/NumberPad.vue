@@ -1,5 +1,5 @@
 <template>
-  <div class="numberPad">
+  <div class="number-pad">
     <header>
       <label name="notes" class="notes">
         备注：
@@ -46,7 +46,8 @@ export default class NotePad extends Vue {
 <style lang='scss' scoped>
 @import "~@/assets/style/reset.scss";
 
-.numberPad {
+.number-pad {
+  background: #fff;
   header {
     display: flex;
     justify-content: space-between;

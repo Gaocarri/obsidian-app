@@ -5,7 +5,7 @@
       <Tag-selected :selectedTag="selectedTag" />
     </div>
     <!-- 餐饮 -->
-    <div class="content">
+    <Scroll class="content">
       <Tag-list :tagList="foodList" @selectTag="selectTag" :selectedTag="selectedTag" />
       <!-- 购物 -->
       <Tag-list :tagList="shopList" @selectTag="selectTag" :selectedTag="selectedTag" />
@@ -17,22 +17,9 @@
       <Tag-list :tagList="entertainmentList" @selectTag="selectTag" :selectedTag="selectedTag" />
       <!-- 医疗 -->
       <Tag-list :tagList="medicalList" @selectTag="selectTag" :selectedTag="selectedTag" />
-    </div>
+    </Scroll>
   </div>
 </template>
-
-<style lang='scss' scoped>
-.tags {
-  .head {
-    position: fixed;
-    left: auto;
-    margin: auto;
-    top: 0;
-    z-index: 1;
-  }
-}
-</style>
-
 
 <script lang='ts'>
 import Vue from "vue";
@@ -47,12 +34,15 @@ import {
   medicalList
 } from "@/constants/tagList";
 
+import Scroll from "@/components/common/Scroll.vue";
+
 import TagsNav from "@/components/tags/TagsNav.vue";
 import TagSelected from "@/components/tags/TagSelected.vue";
 import TagList from "@/components/tags/TagList.vue";
 
 @Component({
   components: {
+    Scroll,
     TagsNav,
     TagSelected,
     TagList
@@ -77,3 +67,20 @@ export default class Tags extends Vue {
 }
 </script>
 
+<style lang='scss' scoped>
+.tags {
+  .head {
+    position: fixed;
+    left: auto;
+    margin: auto;
+    top: 0;
+    z-index: 1;
+  }
+  .content {
+    position: absolute;
+    top: 140px;
+    bottom: 0;
+    overflow: hidden;
+  }
+}
+</style>

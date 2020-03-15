@@ -1,9 +1,9 @@
 <template>
   <div class="add">
-    <tab-bar>
+    <tab-bar class="tab-bar">
       <Icon name="back" @click.native="back" />
     </tab-bar>
-    <div class="content">
+    <Scroll class="content">
       <div>x</div>
       <div>1</div>
       <div>1</div>
@@ -115,7 +115,7 @@
       <div>1</div>
       <div>1</div>
       <div>x</div>
-    </div>
+    </Scroll>
     <div class="number-pad">
       <NumberPad />
     </div>
@@ -126,11 +126,13 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
+import Scroll from "@/components/common/Scroll.vue";
 import TabBar from "@/components/common/TabBar.vue";
 import NumberPad from "@/components/add/NumberPad.vue";
 
 @Component({
   components: {
+    Scroll,
     TabBar,
     NumberPad
   }
@@ -143,15 +145,26 @@ export default class Add extends Vue {
 </script>
 
 <style lang='scss' scoped>
-.content {
-  margin-top: 10px;
-  height: calc(100vh - 360px);
-  overflow: auto;
-}
-.number-pad {
+.tab-bar {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  top: 0;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50px;
+  bottom: 270px;
+  overflow: hidden;
+}
+
+.number-pad {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>

@@ -27,9 +27,11 @@ export default class extends Vue {
 
 <style lang='scss' scoped>
 .tab-bar {
+  background: #fff;
   text-align: center;
   font-size: 20px;
-  margin-top: 10px;
+  padding: 10px;
+  min-height: 40px;
   position: relative;
   .icon {
     position: absolute;
