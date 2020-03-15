@@ -4,7 +4,7 @@
     <Tag-selected :selectedTag="selectedTag"></Tag-selected>
     <ul class="icons">
       <li v-for="tag in foodList" :key="tag.id">
-        <Icon class="icon" :name="tag.name" @click.native="selectTag(tag.name)" />
+        <Icon class="icon" :name="tag.name" @click.native="selectTag(tag)" />
         <span>{{tag.name}}</span>
       </li>
     </ul>
@@ -52,7 +52,10 @@ import TagSelected from "@/components/tags/TagSelected.vue";
   }
 })
 export default class Tags extends Vue {
-  selectedTag: string = "餐饮";
+  selectedTag: Tag = {
+    name: "餐饮",
+    id: 1
+  };
 
   foodList: Tag[] = [
     { name: "餐饮", id: 1 },
@@ -63,8 +66,9 @@ export default class Tags extends Vue {
     { name: "酒水", id: 6 }
   ];
 
-  selectTag(name: string) {
-    this.selectedTag = name;
+  selectTag(tag: Tag) {
+    this.selectedTag.name = tag.name;
+    this.selectedTag.id = tag.id;
   }
 }
 </script>

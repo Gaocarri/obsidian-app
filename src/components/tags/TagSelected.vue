@@ -2,9 +2,9 @@
   <div class="selected-tag">
     <div class="chosed-tag">
       <span>已选标签：</span>
-      <Icon class="selected-icon" :name="selectedTag" />
+      <Icon class="selected-icon" :name="selectedTag.name" />
     </div>
-    <span>{{selectedTag}}</span>
+    <span>{{selectedTag.name}}</span>
   </div>
 </template>
 
@@ -14,7 +14,10 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class TagSelected extends Vue {
-  @Prop({ default: "餐饮", type: String }) selectedTag?: string;
+  @Prop({ default: { name: "餐饮", id: 1 }, type: Object }) selectedTag?: Tag;
+  updated() {
+    console.log(this.selectedTag);
+  }
 }
 </script>
 
