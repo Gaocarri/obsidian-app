@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 const Money = () => import('../views/Money.vue')
 const Add = () => import('../views/Add.vue')
 const Statistics = () => import('../views/Statistics.vue')
+const Tags = () => import('../views/Tags.vue')
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/statistics',
     component: Statistics
+  },
+  {
+    path: '/tags',
+    component: Tags
   }
 ]
 
