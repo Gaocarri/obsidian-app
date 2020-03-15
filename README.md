@@ -23,9 +23,101 @@ const routes = [
   {
     path: '/statistics',
     component: Statistics
-  }
+  },
+  {
+    path: '/tags',
+    component: Tag
+  },
 ]
 ```
+
+# BetterScroll 去除滚动条的简单使用方法
+
+1. 安装betterscroll
+
+```
+yarn add better-scroll
+```
+
+2. 由于typescript的原因，需要安装
+
+```
+@types/better-scroll
+```
+
+3. 封装一个通用的Scroll.vue文件
+
+```vue
+<template>
+  <div class="wrapper" ref="wrapper">
+    <div class="content">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<script lang='ts'>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+import BScroll from "better-scroll";
+
+@Component
+export default class Scroll extends Vue {
+  scroll: any;
+  mounted() {
+    {
+      // 创建scroll对象 
+      this.scroll = new BScroll(this.$refs.wrapper as any, {
+        click: true // betterscroll默认不监听浏览器的原生click，加上true即可监听
+      });
+    }
+  }
+}
+</script>
+```
+
+4. 如在Add.vue中使用Better-scroll（后满会封装Add.vue组件）
+
+```
+<template>
+	<Scroll class="content">
+		<!-此处省略内容-->
+	</Scroll>
+</template>
+
+<script lang='ts'>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+import Scroll from "@/components/common/Scroll.vue";
+
+@Component({
+  components: {
+    Scroll
+  }
+})
+export default class Add extends Vue {
+
+}
+</script>
+
+<style>
+	.content{
+  	position: absolute;
+  	top: 50px;
+  	bottom: 270px;
+  	left:0
+  	right:0
+  	overflow: hidden;
+	}
+</style>
+
+```
+
+5. ok 可以愉快地使用better-scroll了
+
+- 注意：必须给better-scroll指定的高度才可以滚动（无高度不可以滚动）
 
 # Nav.vue 底部导航栏的封装
 
@@ -158,22 +250,6 @@ yarn add svgo-loader
    </style>
 ```
 
-# Money.vue
-
-1. 封装MoneyHead.vue,MoneyToday.vue和MoneyContent.vue并引入Money
-
-```
-   <template>
-     <div>
-       <Layout>
-         <money-head />
-         <money-today />
-         <money-content />
-       </Layout>
-     </div>
-   </template>
-```
-
 # TabBar的封装
 
 1.获得选中状态(添加 class selected)
@@ -214,92 +290,86 @@ export default class extends Vue {
 
 # Tags.vue的封装
 
-
-
-# BetterScroll 去除滚动条的简单使用方法
-
-1. 安装betterscroll
+1. Tags.vue拥有的组件
 
 ```
-yarn add better-scroll
+  components: {
+    TagsNav,
+    TagSelected,
+    TagList
+  }
 ```
 
-2. 由于typescript的原因，需要安装
+2. TagsNav的封装
+   * 无难点，注意判断完成的点击状态，以及complete方法传入新添的tag即可
 
 ```
-@types/better-scroll
-```
-
-3. 封装一个通用的Scroll.vue文件
-
-```vue
 <template>
-  <div class="wrapper" ref="wrapper">
-    <div class="content">
-      <slot></slot>
+  <header>
+    <div class="back" @click="back">
+      <Icon name="back" />
     </div>
-  </div>
+    <span>添加支出类别</span>
+    <span class="complete" :class="{'complete-clicked':clicked}" @click="complete">完成</span>
+  </header>
 </template>
+```
 
-<script lang='ts'>
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+3. TagSelected的封装
 
-import BScroll from "better-scroll";
+   * 无难点，只需从Tags.vue中传入选中的tag即可
+
+```
+   @Prop({ default: { name: "餐饮", id: 1 }, type: Object }) selectedTag?: Tag;
+```
+
+   
+
+4. TagsList的封装
+
+* 这里需要从Tags.vue中传入tagList和selectTag从而正确的显示
+* 点击Icon后会得到一个selectTag从而给其添加样式
+* 通过判断当前选中的tag的id是否与当前Icon的id一致来判断是否添加class
+
+```
+<ul class="icons">
+      <li v-for="tag in tagList" :key="tag.id">
+        <Icon
+          class="icon"
+          :name="tag.name"
+          @click.native="selectTag(tag)"
+          :class="{'selected':selectedTag.id===tag.id}"
+        />
+        <span>{{tag.name}}</span>
+</li>
 
 @Component
-export default class Scroll extends Vue {
-  scroll: any;
-  mounted() {
-    {
-      // 创建scroll对象 
-      this.scroll = new BScroll(this.$refs.wrapper as any, {
-        click: true // betterscroll默认不监听浏览器的原生click，加上true即可监听
-      });
-    }
+export default class TagList extends Vue {
+  @Prop() readonly tagList!: Tag[];
+  @Prop() selectedTag?: Tag;
+
+  selectTag(tag: Tag) {
+    this.$emit("selectTag", tag);
   }
 }
-</script>
 ```
 
-4. 如在Add.vue中使用Better-scroll
+# Add.vue的封装
+
+
+
+# Money.vue的封装
+
+1. 封装MoneyHead.vue,MoneyToday.vue和MoneyContent.vue并引入Money
 
 ```
-<template>
-	<Scroll class="content">
-		<!-此处省略内容-->
-	</Scroll>
-</template>
-
-<script lang='ts'>
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-
-import Scroll from "@/components/common/Scroll.vue";
-
-@Component({
-  components: {
-    Scroll
-  }
-})
-export default class Add extends Vue {
-
-}
-</script>
-
-<style>
-	.content{
-  	position: absolute;
-  	top: 50px;
-  	bottom: 270px;
-  	left:0
-  	right:0
-  	overflow: hidden;
-	}
-</style>
-
+   <template>
+     <div>
+       <Layout>
+         <money-head />
+         <money-today />
+         <money-content />
+       </Layout>
+     </div>
+   </template>
 ```
-
-5. ok 可以愉快地使用better-scroll了
-
-* 注意：必须给better-scroll指定的高度才可以滚动（无高度不可以滚动）
