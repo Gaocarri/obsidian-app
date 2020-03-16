@@ -69,7 +69,7 @@ export default class Tags extends Vue {
   created() {
     this.$store.commit("fetchTags");
   }
-
+  // 选择标签
   selectTag(tag: Tag) {
     this.selectedTag = tag;
   }

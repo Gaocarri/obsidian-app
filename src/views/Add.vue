@@ -69,10 +69,11 @@ export default class Add extends Vue {
   // 删除标签
   deleteTag() {
     this.buttonSelected = !this.buttonSelected;
-    this.$store.commit("deleteTag", this.selectedId);
     window.setTimeout(() => {
       this.buttonSelected = !this.buttonSelected;
     }, 200);
+    this.$store.commit("deleteTag", this.selectedId);
+    this.$toast.show(this.$store.state.toastMessage);
   }
 
   // 选中标签
