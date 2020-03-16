@@ -9,16 +9,7 @@
       </template>
     </tab-bar>
     <Scroll class="content">
-      <ul class="tag-list">
-        <li v-for="tag in tagList" :key="tag.id" class="tag-item">
-          <Icon :name="tag.name" class="icon" />
-          <span>{{tag.name}}</span>
-        </li>
-        <li class="tag-item">
-          <Icon name="添加" class="icon" @click.native="add" />
-          <span>添加</span>
-        </li>
-      </ul>
+      <Tags-table :tagList="tagList" :selectedId.sync="selectedId" @selectIcon="selectIcon" />
     </Scroll>
     <div class="number-pad">
       <NumberPad />
@@ -33,16 +24,19 @@ import { Component } from "vue-property-decorator";
 import Scroll from "@/components/common/Scroll.vue";
 import TabBar from "@/components/common/TabBar.vue";
 import NumberPad from "@/components/add/NumberPad.vue";
+import TagsTable from "@/components/add/TagsTable.vue";
 
 @Component({
   components: {
     Scroll,
     TabBar,
-    NumberPad
+    NumberPad,
+    TagsTable
   }
 })
 export default class Add extends Vue {
   tagList: Tag[] = [];
+  selectedId: number = 0;
 
   back() {
     this.$router.push("/money");
@@ -50,49 +44,24 @@ export default class Add extends Vue {
   created() {
     this.$store.commit("fetchTags");
     this.tagList = this.$store.state.tagList;
-    console.log(this.tagList);
+    this.selectedId = this.tagList[0].id || 0;
   }
-  // 进入tags页面
-  add() {
-    this.$router.push("/tags");
-  }
+  mounted() {}
   // 删除标签
   deleteTag() {
-    console.log("hi");
+    this.$store.commit("deleteTag", this.selectedId);
+    this.tagList = this.$store.state.tagList;
+    this.selectedId = this.tagList[0].id || 0;
+  }
+
+  // 选中标签
+  selectIcon(id: number) {
+    this.selectedId = id;
   }
 }
 </script>
 
 <style lang='scss' scoped>
-.tag-list {
-  padding: 20px 0;
-  display: flex;
-  flex-wrap: wrap;
-  text-align: center;
-  font-size: 14px;
-  .tag-item {
-    width: 25vw;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    .icon {
-      background: #ddd;
-      color: #000;
-      width: 60px;
-      height: 60px;
-      padding: 10px;
-      border-radius: 50%;
-      margin-bottom: 4px;
-      &.selected {
-        color: #fff;
-        background: #000;
-      }
-    }
-  }
-}
-
 .tab-bar {
   position: fixed;
   left: 0;

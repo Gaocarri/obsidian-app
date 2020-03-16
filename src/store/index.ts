@@ -23,10 +23,11 @@ const store = new Vuex.Store({
         window.alert('添加成功')
       }
     },
-    deleteTag(state, tag: Tag) {
+    deleteTag(state, id: number) {
       const ids = state.tagList.map(item => item.id)
-      const index = ids.indexOf(tag.id)
+      const index = ids.indexOf(id)
       state.tagList.splice(index, 1)
+      store.commit('saveTags')
     },
     saveTags(state) {
       const storageTagList = JSON.stringify(state.tagList)
