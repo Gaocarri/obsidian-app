@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <div class="head">
-      <Tags-nav />
+      <Tags-nav :selectedTag="selectedTag" />
       <Tag-selected :selectedTag="selectedTag" />
     </div>
     <!-- 餐饮 -->
@@ -60,9 +60,12 @@ export default class Tags extends Vue {
     id: 1
   };
 
+  created() {
+    this.$store.commit("fetchTags");
+  }
+
   selectTag(tag: Tag) {
-    this.selectedTag.name = tag.name;
-    this.selectedTag.id = tag.id;
+    this.selectedTag = tag;
   }
 }
 </script>

@@ -10,16 +10,19 @@
 
 <script lang='ts'>
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class tagsNav extends Vue {
+  @Prop() selectedTag!: Tag;
   clicked: boolean = false;
   back() {
     this.$router.push("/add");
   }
   complete() {
     this.clicked = !this.clicked;
+    this.$store.commit("createTag", this.selectedTag);
+    this.$router.push("/add");
   }
 }
 </script>

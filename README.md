@@ -354,6 +354,23 @@ export default class TagList extends Vue {
 }
 ```
 
+5. Tags.vue的selected方法（遇到的坑）
+
+```
+  selectTag(tag: Tag) {
+    this.selectedTag = tag;
+  } // 正确的写法，会同步更新
+```
+
+````
+  selectTag(tag: Tag) {
+    this.selectedTag.name = tag.name
+    this.selectedTag.id = tag.id
+  }// 错误的写法，selectedTag不会同步更新
+````
+
+
+
 # Add.vue的封装
 
 
@@ -373,3 +390,9 @@ export default class TagList extends Vue {
      </div>
    </template>
 ```
+
+
+
+
+
+## 需要完成TagNav的完成传值功能
