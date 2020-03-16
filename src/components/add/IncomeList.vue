@@ -9,7 +9,7 @@
       />
       <span>{{tag.name}}</span>
     </li>
-    <li class="tag-item">
+    <li class="tag-item" v-if="type=='-'">
       <Icon name="添加" class="icon" @click.native="add" />
       <span>添加</span>
     </li>
@@ -21,9 +21,10 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class TagsTable extends Vue {
+export default class IncomeList extends Vue {
   @Prop() tagList?: Tag[];
   @Prop() selectedId!: number;
+  @Prop({ default: "-" }) type?: string;
 
   // 选中标签
   selectIcon(id: number) {

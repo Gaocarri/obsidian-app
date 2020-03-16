@@ -48,4 +48,13 @@ const medicalList = Object.freeze([
   { name: "手术", id: 32 },
 ])
 
-export { foodList, shopList, trafficList, resideList, entertainmentList, medicalList }
+const expendList = Object.freeze([
+  { name: "工资", id: 33 },
+  { name: "兼职", id: 34 },
+  { name: "奖金", id: 35 },
+  { name: "报销", id: 36 },
+  { name: "礼金", id: 37 },
+
+])
+
+export { foodList, shopList, trafficList, resideList, entertainmentList, medicalList, expendList }

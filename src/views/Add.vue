@@ -1,16 +1,23 @@
 <template>
   <div class="add">
-    <tab-bar class="tab-bar">
+    <tab-bar class="tab-bar" @selectType="selectType">
       <template v-slot:icon>
         <Icon name="back" @click.native="back" />
       </template>
       <template v-slot:delete>
-        <span @click="deleteTag">删除标签</span>
+        <span @click="deleteTag" v-if="type==='-'">删除标签</span>
       </template>
     </tab-bar>
+
     <Scroll class="content">
-      <Tags-table :tagList="tagList" :selectedId.sync="selectedId" @selectIcon="selectIcon" />
+      <Income-list
+        :tagList="tagList"
+        :selectedId="selectedId"
+        :type="type"
+        @selectIcon="selectIcon"
+      />
     </Scroll>
+
     <div class="number-pad">
       <NumberPad />
     </div>
@@ -20,38 +27,54 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import { expendList } from "@/constants/tagList";
 
 import Scroll from "@/components/common/Scroll.vue";
 import TabBar from "@/components/common/TabBar.vue";
 import NumberPad from "@/components/add/NumberPad.vue";
-import TagsTable from "@/components/add/TagsTable.vue";
+import IncomeList from "@/components/add/IncomeList.vue";
 
 @Component({
   components: {
     Scroll,
     TabBar,
     NumberPad,
-    TagsTable
+    IncomeList
   }
 })
 export default class Add extends Vue {
-  tagList: Tag[] = [];
   selectedId: number = 0;
+  type: string = "-";
+
+  get tagList() {
+    if (this.type === "-") {
+      return this.$store.state.tagList;
+    } else if (this.type === "+") {
+      return expendList;
+    }
+  }
 
   back() {
     this.$router.push("/money");
   }
   created() {
     this.$store.commit("fetchTags");
-    this.tagList = this.$store.state.tagList;
-    this.selectedId = this.tagList[0].id || 0;
+    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
   }
-  mounted() {}
+
+  //选择收入或者支出
+  selectType(type: string) {
+    this.type = type;
+    // this.selectedId = this.tagList[0].id || 0;
+    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
+  }
   // 删除标签
   deleteTag() {
     this.$store.commit("deleteTag", this.selectedId);
-    this.tagList = this.$store.state.tagList;
-    this.selectedId = this.tagList[0].id || 0;
+    console.log(this.tagList);
+    // this.selectedId = this.tagList[0].id || 0;
+    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
+    console.log(this.selectedId);
   }
 
   // 选中标签

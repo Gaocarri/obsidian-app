@@ -3,8 +3,8 @@
     <div class="icon">
       <slot name="icon" />
     </div>
-    <span class="expend" :class="{'selected':type==='-'}" @click="selectExpend">支出</span>
-    <span class="income" :class="{'selected':type==='+'}" @click="selectIncome">收入</span>
+    <span class="expend" :class="{'selected':type==='-'}" @click="selectType('-')">支出</span>
+    <span class="income" :class="{'selected':type==='+'}" @click="selectType('+')">收入</span>
     <div class="delete">
       <slot name="delete" />
     </div>
@@ -17,13 +17,11 @@ import { Component } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
-  type: string = "+";
+  type: string = "-";
 
-  selectExpend() {
-    this.type = "-";
-  }
-  selectIncome() {
-    this.type = "+";
+  selectType(type: string) {
+    this.type = type;
+    this.$emit("selectType", type);
   }
 }
 </script>

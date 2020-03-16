@@ -4,6 +4,7 @@
       <Tags-nav :selectedTag="selectedTag" />
       <Tag-selected :selectedTag="selectedTag" />
     </div>
+
     <!-- 餐饮 -->
     <Scroll class="content">
       <Tag-list :tagList="foodList" @selectTag="selectTag" :selectedTag="selectedTag" />
