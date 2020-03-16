@@ -18,9 +18,3 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-// 页面加载后默认滚动到最上方以显示顶部
-window.onload = function () {
-  setTimeout(function () {
-    window.scrollTo(0, -100)
-  }, 0)
-} 

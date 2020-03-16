@@ -7,7 +7,12 @@
 
     <!-- 餐饮 -->
     <Scroll class="content">
-      <Tag-list :tagList="foodList" @selectTag="selectTag" :selectedTag="selectedTag" />
+      <Tag-list
+        :tagList="foodList"
+        @selectTag="selectTag"
+        :selectedTag="selectedTag"
+        class="first-list"
+      />
       <!-- 购物 -->
       <Tag-list :tagList="shopList" @selectTag="selectTag" :selectedTag="selectedTag" />
       <!-- 交通 -->
@@ -78,13 +83,15 @@ export default class Tags extends Vue {
     left: auto;
     margin: auto;
     top: 0;
-    z-index: 1;
   }
   .content {
     position: absolute;
-    top: 140px;
+    top: 120px;
     bottom: 0;
     overflow: hidden;
+  }
+  .first-list ::v-deep header {
+    padding-top: 20px;
   }
 }
 </style>
