@@ -4,117 +4,16 @@
       <Icon name="back" @click.native="back" />
     </tab-bar>
     <Scroll class="content">
-      <div>x</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>x</div>
+      <ul class="tag-list">
+        <li v-for="tag in tagList" :key="tag.id" class="tag-item">
+          <Icon :name="tag.name" class="icon" />
+          <span>{{tag.name}}</span>
+        </li>
+        <li class="tag-item">
+          <Icon name="添加" class="icon" @click.native="add" />
+          <span>添加</span>
+        </li>
+      </ul>
     </Scroll>
     <div class="number-pad">
       <NumberPad />
@@ -138,13 +37,53 @@ import NumberPad from "@/components/add/NumberPad.vue";
   }
 })
 export default class Add extends Vue {
+  tagList: Tag[] = [];
+
   back() {
     this.$router.push("/money");
+  }
+  created() {
+    this.$store.commit("fetchTags");
+    this.tagList = this.$store.state.tagList;
+    console.log(this.tagList);
+  }
+  // 进入tags页面
+  add() {
+    this.$router.push("/tags");
   }
 }
 </script>
 
 <style lang='scss' scoped>
+.tag-list {
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  font-size: 14px;
+  .tag-item {
+    width: 25vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    .icon {
+      background: #ddd;
+      color: #000;
+      width: 60px;
+      height: 60px;
+      padding: 10px;
+      border-radius: 50%;
+      margin-bottom: 4px;
+      &.selected {
+        color: #fff;
+        background: #000;
+      }
+    }
+  }
+}
+
 .tab-bar {
   position: fixed;
   left: 0;

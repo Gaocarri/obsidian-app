@@ -19,6 +19,7 @@ const store = new Vuex.Store({
       } else {
         state.tagList.push(tag)
         store.commit('saveTags');
+        window.alert('添加成功')
       }
     },
     saveTags(state) {

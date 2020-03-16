@@ -22,7 +22,6 @@ export default class tagsNav extends Vue {
   complete() {
     this.clicked = !this.clicked;
     this.$store.commit("createTag", this.selectedTag);
-    this.$router.push("/add");
   }
 }
 </script>

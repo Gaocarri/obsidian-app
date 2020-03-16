@@ -59,7 +59,7 @@ export default class NotePad extends Vue {
         background: none;
         outline: none;
         border: 0px;
-        width: 30vw;
+        width: 25vw;
         color: #bbb;
       }
     }
