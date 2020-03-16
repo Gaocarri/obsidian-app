@@ -5,7 +5,7 @@
         <Icon name="back" @click.native="back" />
       </template>
       <template v-slot:delete>
-        <span @click="deleteTag" v-if="type==='-'">删除标签</span>
+        <span @click="deleteTag" :class="{'button-selected':buttonSelected}" v-if="type==='-'">删除标签</span>
       </template>
     </tab-bar>
 
@@ -40,6 +40,7 @@ import TagTable from "@/components/add/TagTable.vue";
 export default class Add extends Vue {
   selectedId: number = 0;
   type: string = "-";
+  buttonSelected: boolean = false;
 
   get tagList() {
     if (this.type === "-") {
@@ -67,7 +68,11 @@ export default class Add extends Vue {
   }
   // 删除标签
   deleteTag() {
+    this.buttonSelected = !this.buttonSelected;
     this.$store.commit("deleteTag", this.selectedId);
+    window.setTimeout(() => {
+      this.buttonSelected = !this.buttonSelected;
+    }, 200);
   }
 
   // 选中标签
@@ -83,6 +88,9 @@ export default class Add extends Vue {
   left: 0;
   right: 0;
   top: 0;
+  .button-selected {
+    color: #ccc;
+  }
 }
 
 .content {

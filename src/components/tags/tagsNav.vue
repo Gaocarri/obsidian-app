@@ -21,6 +21,9 @@ export default class tagsNav extends Vue {
   }
   complete() {
     this.clicked = !this.clicked;
+    window.setTimeout(() => {
+      this.clicked = !this.clicked;
+    }, 200);
     this.$store.commit("createTag", this.selectedTag);
   }
 }

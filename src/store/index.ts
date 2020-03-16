@@ -16,11 +16,11 @@ const store = new Vuex.Store({
     createTag(state, tag: Tag) {
       const ids = state.tagList.filter(item => item.id === tag.id)
       if (ids.length > 0) {
-        window.alert('重复')
+        // window.alert('重复')
       } else {
         state.tagList.push(tag)
         store.commit('saveTags');
-        window.alert('添加成功')
+        // window.alert('添加成功')
       }
     },
     deleteTag(state, id: number) {
