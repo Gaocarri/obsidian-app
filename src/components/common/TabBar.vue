@@ -1,10 +1,13 @@
 <template>
   <div class="tab-bar">
     <div class="icon">
-      <slot />
+      <slot name="icon" />
     </div>
     <span class="expend" :class="{'selected':type==='-'}" @click="selectExpend">支出</span>
     <span class="income" :class="{'selected':type==='+'}" @click="selectIncome">收入</span>
+    <div class="delete">
+      <slot name="delete" />
+    </div>
   </div>
 </template>
 
@@ -54,6 +57,16 @@ export default class extends Vue {
 
   .selected {
     border-bottom: 2px solid #000;
+  }
+
+  .delete {
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-10px);
+    font-size: 14px;
   }
 }
 </style>

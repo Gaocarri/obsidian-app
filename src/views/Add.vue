@@ -1,7 +1,12 @@
 <template>
   <div class="add">
     <tab-bar class="tab-bar">
-      <Icon name="back" @click.native="back" />
+      <template v-slot:icon>
+        <Icon name="back" @click.native="back" />
+      </template>
+      <template v-slot:delete>
+        <span @click="deleteTag">删除标签</span>
+      </template>
     </tab-bar>
     <Scroll class="content">
       <ul class="tag-list">
@@ -50,6 +55,10 @@ export default class Add extends Vue {
   // 进入tags页面
   add() {
     this.$router.push("/tags");
+  }
+  // 删除标签
+  deleteTag() {
+    console.log("hi");
   }
 }
 </script>

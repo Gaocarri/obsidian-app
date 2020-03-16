@@ -12,6 +12,7 @@ const store = new Vuex.Store({
     tagList: [],
   } as RootState,
   mutations: {
+    // tagList方法
     createTag(state, tag: Tag) {
       const ids = state.tagList.filter(item => item.id === tag.id)
       if (ids.length > 0) {
@@ -21,6 +22,11 @@ const store = new Vuex.Store({
         store.commit('saveTags');
         window.alert('添加成功')
       }
+    },
+    deleteTag(state, tag: Tag) {
+      const ids = state.tagList.map(item => item.id)
+      const index = ids.indexOf(tag.id)
+      state.tagList.splice(index, 1)
     },
     saveTags(state) {
       const storageTagList = JSON.stringify(state.tagList)
