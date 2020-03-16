@@ -26,7 +26,7 @@
 
 <script lang='ts'>
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import { expendList } from "@/constants/tagList";
 
 import Scroll from "@/components/common/Scroll.vue";
@@ -54,27 +54,25 @@ export default class Add extends Vue {
     }
   }
 
+  @Watch("tagList")
+  onTagListChanged(newVal: Tag) {
+    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
+  }
+
   back() {
     this.$router.push("/money");
   }
   created() {
     this.$store.commit("fetchTags");
-    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
   }
 
   //选择收入或者支出
   selectType(type: string) {
     this.type = type;
-    // this.selectedId = this.tagList[0].id || 0;
-    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
   }
   // 删除标签
   deleteTag() {
     this.$store.commit("deleteTag", this.selectedId);
-    console.log(this.tagList);
-    // this.selectedId = this.tagList[0].id || 0;
-    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
-    console.log(this.selectedId);
   }
 
   // 选中标签
