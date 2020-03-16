@@ -10,12 +10,7 @@
     </tab-bar>
 
     <Scroll class="content">
-      <Income-list
-        :tagList="tagList"
-        :selectedId="selectedId"
-        :type="type"
-        @selectIcon="selectIcon"
-      />
+      <Tag-table :tagList="tagList" :selectedId="selectedId" :type="type" @selectIcon="selectIcon" />
     </Scroll>
 
     <div class="number-pad">
@@ -32,14 +27,14 @@ import { expendList } from "@/constants/tagList";
 import Scroll from "@/components/common/Scroll.vue";
 import TabBar from "@/components/common/TabBar.vue";
 import NumberPad from "@/components/add/NumberPad.vue";
-import IncomeList from "@/components/add/IncomeList.vue";
+import TagTable from "@/components/add/TagTable.vue";
 
 @Component({
   components: {
     Scroll,
     TabBar,
     NumberPad,
-    IncomeList
+    TagTable
   }
 })
 export default class Add extends Vue {
