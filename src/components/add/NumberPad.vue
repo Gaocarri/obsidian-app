@@ -3,9 +3,12 @@
     <header>
       <label name="notes" class="notes">
         备注：
-        <input type="text" name="notes" placeholder="写点备注吧~" />
+        <input type="text" name="notes" placeholder="写点备注吧~" v-model="note" />
       </label>
-      <div class="output">金额：???</div>
+      <div class="output">
+        <span>金额：</span>
+        <div class="amount">{{output}}{{note}}</div>
+      </div>
     </header>
     <div class="buttons">
       <button @click="inputContent">7</button>
@@ -35,8 +38,26 @@ import { Component } from "vue-property-decorator";
 
 @Component
 export default class NotePad extends Vue {
-  inputContent() {}
-  back() {}
+  note: string = "";
+  output: string = "0";
+  inputContent(event: MouseEvent) {
+    const button = event.target as HTMLButtonElement; // TS强制指定类型
+    const input = button.textContent!;
+    if (this.output.length === 16) return;
+    if (this.output === "0") {
+      if ("0123456789".indexOf(input) >= 0) {
+        this.output = input;
+      } else {
+        this.output += input;
+      }
+      return;
+    }
+    if (this.output.indexOf(".") >= 0 && input === ".") return;
+    this.output += input;
+  }
+  back() {
+    this.output = this.output.substring(0, this.output.length - 1);
+  }
   add() {}
   increment() {}
   ok() {}
@@ -55,6 +76,7 @@ export default class NotePad extends Vue {
       flex: 1;
       border-top: 1px solid #eee;
       padding: 6px;
+      white-space: nowrap;
       input {
         background: none;
         outline: none;
@@ -68,6 +90,15 @@ export default class NotePad extends Vue {
       border-top: 1px solid #eee;
       border-left: 1px solid #eee;
       flex: 1;
+      display: flex;
+      flex-wrap: nowrap;
+      span {
+        width: 50px;
+      }
+      .amount {
+        white-space: nowrap;
+        overflow-x: auto;
+      }
     }
   }
   .buttons {

@@ -431,7 +431,7 @@ export default class extends Vue {
 
 ```
   components: {
-  Scroll,
+  	Scroll,
     TagsNav,
     TagSelected,
     TagList
@@ -523,6 +523,60 @@ export default class TagList extends Vue {
   }
 })
 ```
+
+2. 在Add.vue中获取tagList,经过详细考虑我发现使用计算属性和watch能更好的获取tagList和当前选择标签的id
+
+```
+export default class Add extends Vue {
+  selectedId: number = 0;
+  type: string = "-";
+  buttonSelected: boolean = false;
+
+  get tagList() {
+    if (this.type === "-") {
+      return this.$store.state.tagList;
+    } else if (this.type === "+") {
+      return expendList;
+    }
+  }
+
+  @Watch("tagList")
+  onTagListChanged(newVal: Tag) {
+    this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
+  }
+
+```
+
+3. 封装一个TagTable.vue组件根据传过来的TagList
+
+```
+<template>
+  <div class="tag-list">
+    <header>{{tagList[0].name}}</header>
+    <ul class="icons">
+      <li v-for="tag in tagList" :key="tag.id">
+        <Icon
+          class="icon"
+          :name="tag.name"
+          :class="{'selected':selectedTag.id===tag.id}"
+        />
+        <span>{{tag.name}}</span>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script lang='ts'>
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+
+@Component
+export default class TagList extends Vue {
+  @Prop() readonly tagList!: Tag[];
+}
+```
+
+
 
 
 
