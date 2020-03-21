@@ -5,20 +5,17 @@
         备注：
         <input type="text" name="notes" placeholder="写点备注吧~" v-model="note" />
       </label>
-      <div class="output">
-        <span>金额：</span>
-        <div class="amount">{{output}}{{note}}</div>
-      </div>
+      <div class="output">金额：{{output}}</div>
     </header>
     <div class="buttons">
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="increment">-</button>
+      <button @click="remove">清空</button>
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button @click="add">+</button>
+      <button @click="inputContent">+</button>
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
       <button @click="inputContent">3</button>
@@ -52,15 +49,35 @@ export default class NotePad extends Vue {
       }
       return;
     }
-    if (this.output.indexOf(".") >= 0 && input === ".") return;
+    if (this.output.indexOf(".") >= 0 && input === ".") {
+      const temp = this.output.split("+");
+      console.log(temp);
+      if (temp[temp.length - 1].indexOf(".") >= 0) {
+        return;
+      }
+    }
+
     this.output += input;
   }
   back() {
     this.output = this.output.substring(0, this.output.length - 1);
+    if (this.output.length === 0) {
+      this.output = "0";
+    }
   }
-  add() {}
-  increment() {}
-  ok() {}
+  remove() {
+    this.output = "0";
+  }
+  ok() {
+    const addArray = this.output.split("+");
+    this.output = "0";
+    console.log(addArray);
+    for (let i = 0; i < addArray.length; i++) {
+      this.output = (
+        parseFloat(this.output) + parseFloat(addArray[i])
+      ).toString();
+    }
+  }
 }
 </script>
 
@@ -72,6 +89,9 @@ export default class NotePad extends Vue {
   header {
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
+    height: 40px;
+    position: relative;
     .notes {
       flex: 1;
       border-top: 1px solid #eee;
@@ -88,17 +108,21 @@ export default class NotePad extends Vue {
     .output {
       padding: 6px;
       border-top: 1px solid #eee;
-      border-left: 1px solid #eee;
       flex: 1;
-      display: flex;
-      flex-wrap: nowrap;
-      span {
-        width: 50px;
-      }
-      .amount {
-        white-space: nowrap;
-        overflow-x: auto;
-      }
+      white-space: nowrap;
+      overflow: auto;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 10;
+    }
+    &::after {
+      content: "";
+      display: block;
+      height: 40px;
+      width: 40px;
+      border-left: 1px solid #eee;
+      position: absolute;
+      left: 50%;
     }
   }
   .buttons {
