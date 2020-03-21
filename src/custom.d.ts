@@ -3,5 +3,10 @@ type Tag = {
   id: number | undefined;
 }
 
-
+type RecordItem = {
+  tag: Tag | {};
+  notes: string;
+  type: string;
+  amount: number;
+}
 

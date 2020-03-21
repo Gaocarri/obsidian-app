@@ -14,7 +14,7 @@
     </Scroll>
 
     <div class="number-pad">
-      <NumberPad />
+      <NumberPad @saveRecord="saveRecord" />
     </div>
   </div>
 </template>
@@ -41,6 +41,12 @@ export default class Add extends Vue {
   selectedId: number = 0;
   type: string = "-";
   buttonSelected: boolean = false;
+  record: RecordItem = {
+    tag: {},
+    notes: "",
+    type: "-",
+    amount: 0
+  };
 
   get tagList() {
     if (this.type === "-") {
@@ -53,6 +59,7 @@ export default class Add extends Vue {
   @Watch("tagList")
   onTagListChanged(newVal: Tag) {
     this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
+    console.log(this.selectedId);
   }
 
   back() {
@@ -79,6 +86,20 @@ export default class Add extends Vue {
   // 选中标签
   selectIcon(id: number) {
     this.selectedId = id;
+  }
+
+  // 存储数据
+  saveRecord(value1: string, value2: string) {
+    this.record.amount = parseFloat(value1);
+    this.record.notes = value2;
+    this.record.type = this.type;
+    this.record.tag = this.tagList.filter((item: Tag) => {
+      return item.id === this.selectedId;
+    })[0];
+    console.log(this.record);
+    const typeString = this.type === "-" ? "支出" : "收入";
+    this.$toast.show(`已添加${typeString}`);
+    this.$store.commit("saveRecord", this.record);
   }
 }
 </script>

@@ -48,6 +48,10 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]')
       // console.log(state.tagList)
+    },
+    // recordList方法
+    saveRecord() {
+      console.log('hi')
     }
   },
   actions: {

@@ -3,7 +3,7 @@
     <header>
       <label name="notes" class="notes">
         备注：
-        <input type="text" name="notes" placeholder="写点备注吧~" v-model="note" />
+        <input type="text" name="notes" placeholder="写点备注吧~" v-model="notes" />
       </label>
       <div class="output">金额：{{output}}</div>
     </header>
@@ -31,11 +31,11 @@
 
 <script lang='ts'>
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NotePad extends Vue {
-  note: string = "";
+  notes: string = "";
   output: string = "0";
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; // TS强制指定类型
@@ -71,12 +71,16 @@ export default class NotePad extends Vue {
   ok() {
     const addArray = this.output.split("+");
     this.output = "0";
-    console.log(addArray);
     for (let i = 0; i < addArray.length; i++) {
+      if (addArray[i] === "") return;
       this.output = (
         parseFloat(this.output) + parseFloat(addArray[i])
       ).toString();
     }
+
+    this.$emit("saveRecord", this.output, this.notes);
+    this.notes = "";
+    this.output = "0";
   }
 }
 </script>
