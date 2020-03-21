@@ -14,7 +14,7 @@
     </Scroll>
 
     <div class="number-pad">
-      <NumberPad @saveRecord="saveRecord" />
+      <NumberPad @createRecord="createRecord" />
     </div>
   </div>
 </template>
@@ -59,7 +59,6 @@ export default class Add extends Vue {
   @Watch("tagList")
   onTagListChanged(newVal: Tag) {
     this.selectedId = this.tagList[0] ? this.tagList[0].id : 0;
-    console.log(this.selectedId);
   }
 
   back() {
@@ -89,7 +88,7 @@ export default class Add extends Vue {
   }
 
   // 存储数据
-  saveRecord(value1: string, value2: string) {
+  createRecord(value1: string, value2: string) {
     this.record.amount = parseFloat(value1);
     this.record.notes = value2;
     this.record.type = this.type;
@@ -99,7 +98,7 @@ export default class Add extends Vue {
     console.log(this.record);
     const typeString = this.type === "-" ? "支出" : "收入";
     this.$toast.show(`已添加${typeString}`);
-    this.$store.commit("saveRecord", this.record);
+    this.$store.commit("createRecord", this.record);
   }
 }
 </script>

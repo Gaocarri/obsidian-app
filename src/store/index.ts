@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
+import clone from '@/lib/clone'
 
 Vue.use(Vuex)
 
 type RootState = {
   toastMessage: string;
   tagList: Tag[];
+  recordList: RecordItem[];
 }
 
 const store = new Vuex.Store({
   state: {
     toastMessage: '',
     tagList: [],
+    recordList: []
   } as RootState,
   mutations: {
     // toastMessage方法
@@ -49,10 +52,20 @@ const store = new Vuex.Store({
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]')
       // console.log(state.tagList)
     },
+
     // recordList方法
-    saveRecord() {
-      console.log('hi')
-    }
+    fetchRecords(state) {
+      state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
+    },
+    createRecord(state, record) {
+      const record2: RecordItem = clone(record);
+      record2.createdAt = new Date().toISOString();
+      state.recordList.push(record2);
+      store.commit('saveRecords')
+    },
+    saveRecords(state) {
+      window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
+    },
   },
   actions: {
   },

@@ -78,7 +78,7 @@ export default class NotePad extends Vue {
       ).toString();
     }
 
-    this.$emit("saveRecord", this.output, this.notes);
+    this.$emit("createRecord", this.output, this.notes);
     this.notes = "";
     this.output = "0";
   }
