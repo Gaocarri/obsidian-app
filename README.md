@@ -576,7 +576,63 @@ export default class TagList extends Vue {
 }
 ```
 
+4. 封装NumberPad来记录金额和备注
 
+* 点加ok时进行数组操作 来进行加法运算
+
+```
+ ok() {
+    const addArray = this.output.split("+");
+    this.output = "0";
+    for (let i = 0; i < addArray.length; i++) {
+      if (addArray[i] === "") return;
+      this.output = (
+        parseFloat(this.output) + parseFloat(addArray[i])
+      ).toString();
+    }
+
+    this.$emit("createRecord", this.output, this.notes);
+    this.notes = "";
+    this.output = "0";
+  }
+```
+
+5. 在Add.vue中使用record数组来存储每次添加的记录
+
+```
+  record: RecordItem = {
+    tag: {},
+    notes: "",
+    type: "-",
+    amount: 0
+  };
+  
+  type RecordItem = {
+  tag: Tag | {};
+  notes: string;
+  type: string;
+  amount: number;
+  createdAt?: string;
+}
+```
+
+6. 在store里面封装recordList的方法
+
+```
+    // recordList方法
+    fetchRecords(state) {
+      state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[];
+    },
+    createRecord(state, record) {
+      const record2: RecordItem = clone(record);
+      record2.createdAt = new Date().toISOString();
+      state.recordList.push(record2);
+      store.commit('saveRecords')
+    },
+    saveRecords(state) {
+      window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
+    },
+```
 
 
 
@@ -600,4 +656,5 @@ export default class TagList extends Vue {
 
 
 
-## 给NumberPad添加功能，提交recordList
+## 已经存储了recordList 接下来要做Money.vue了
+需要一个日期选择器
