@@ -61,17 +61,32 @@ export default class MoneyHead extends Vue {
   }
   // 获取当月结余
   get monthBalance() {
-    const currentRecordList = this.recordList.filter((i: RecordItem) => {
+    // 支出
+    const expendRecordList = this.recordList.filter((i: RecordItem) => {
       return (
         dayjs(i.createdAt)
           .year()
           .toString() === this.year &&
-        (dayjs(i.createdAt).month() + 1).toString() === this.month
+        (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+        i.type === "-"
+      );
+    });
+    // 收入
+    const includeRecordList = this.recordList.filter((i: RecordItem) => {
+      return (
+        dayjs(i.createdAt)
+          .year()
+          .toString() === this.year &&
+        (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+        i.type === "+"
       );
     });
     let balance = 0;
-    for (let i = 0; i < currentRecordList.length; i++) {
-      balance += currentRecordList[i].amount;
+    for (let i = 0; i < expendRecordList.length; i++) {
+      balance -= expendRecordList[i].amount;
+    }
+    for (let i = 0; i < includeRecordList.length; i++) {
+      balance += includeRecordList[i].amount;
     }
     // 保留两位小数
     return balance.toFixed(2);
