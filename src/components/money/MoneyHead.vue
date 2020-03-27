@@ -77,40 +77,46 @@ header {
   font-size: 18px;
   .title {
     margin-top: 10px;
-    margin-bottom: 14px;
-    text-align: center;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
     .year {
+      font-size: 18px;
+      background: #212121;
+      color: #fff;
+      border: none;
+      outline: none;
+      height: 30px;
+      line-height: 30px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      option {
+        background: #fff;
+        color: #000;
+      }
+    }
+    .month {
+      font-size: 18px;
+      text-align: center;
+      background: #212121;
+      color: #fff;
       //清除select的边框样式
       border: none;
       //清除select聚焦时候的边框颜色
       outline: none;
       //将select的宽高等于div的宽高
-      width: 60px;
-      height: 40px;
-      line-height: 40px;
+      height: 30px;
+      line-height: 30px;
       //隐藏select的下拉图标
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
       option {
-        border: 4px solid red;
+        background: #fff;
+        color: #000;
       }
-    }
-    .month {
-      //清除select的边框样式
-      border: none;
-      //清除select聚焦时候的边框颜色
-      outline: none;
-      //将select的宽高等于div的宽高
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-      //隐藏select的下拉图标
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      //通过padding-left的值让文字居中
-      padding-left: 60px;
     }
   }
 
