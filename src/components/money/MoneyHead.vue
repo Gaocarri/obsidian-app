@@ -14,12 +14,12 @@
     </div>
     <div class="detail">
       <div>
-        <span>0.00!</span>
-        <span class="des-money">3!月支出</span>
+        <span>{{monthExpend}}</span>
+        <span class="des-money">{{month}}月支出</span>
       </div>
       <div>
-        <span>0.00!</span>
-        <span class="des-money">3!月收入</span>
+        <span>{{MonthInclude}}</span>
+        <span class="des-money">{{month}}月收入</span>
       </div>
     </div>
   </header>
@@ -48,9 +48,9 @@ export default class MoneyHead extends Vue {
   get years() {
     const endYear = dayjs().year();
     let y = 1970;
-    const result: number[] = [];
+    const result: string[] = [];
     while (y <= endYear) {
-      result.push(y);
+      result.push(y.toString());
       y++;
     }
     return result;
@@ -62,7 +62,12 @@ export default class MoneyHead extends Vue {
   // 获取当月结余
   get monthBalance() {
     const currentRecordList = this.recordList.filter((i: RecordItem) => {
-      return (dayjs(i.createdAt).month() + 1).toString() === this.month;
+      return (
+        dayjs(i.createdAt)
+          .year()
+          .toString() === this.year &&
+        (dayjs(i.createdAt).month() + 1).toString() === this.month
+      );
     });
     let balance = 0;
     for (let i = 0; i < currentRecordList.length; i++) {
@@ -71,6 +76,41 @@ export default class MoneyHead extends Vue {
     // 保留两位小数
     return balance.toFixed(2);
   }
+  // 获取当月支出
+  get monthExpend() {
+    const expendRecordList = this.recordList.filter((i: RecordItem) => {
+      return (
+        dayjs(i.createdAt)
+          .year()
+          .toString() === this.year &&
+        (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+        i.type === "-"
+      );
+    });
+    let expend = 0;
+    for (let i = 0; i < expendRecordList.length; i++) {
+      expend += expendRecordList[i].amount;
+    }
+    return expend.toFixed(2);
+  }
+  // 获取当月收入
+  get MonthInclude() {
+    const includeRecordList = this.recordList.filter((i: RecordItem) => {
+      return (
+        dayjs(i.createdAt)
+          .year()
+          .toString() === this.year &&
+        (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+        i.type === "+"
+      );
+    });
+    let include = 0;
+    for (let i = 0; i < includeRecordList.length; i++) {
+      include += includeRecordList[i].amount;
+    }
+    return include.toFixed(2);
+  }
+
   @Watch("year")
   logYear() {
     console.log(this.year);
