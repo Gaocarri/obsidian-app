@@ -51,7 +51,6 @@ export default class NotePad extends Vue {
     }
     if (this.output.indexOf(".") >= 0 && input === ".") {
       const temp = this.output.split("+");
-      console.log(temp);
       if (temp[temp.length - 1].indexOf(".") >= 0) {
         return;
       }

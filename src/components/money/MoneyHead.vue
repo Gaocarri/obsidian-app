@@ -9,8 +9,8 @@
       </select>
     </div>
     <div class="balance">
-      <span class="balance-money">300.00</span>
-      <span class="des-money">3!月结余</span>
+      <span class="balance-money">{{monthBalance}}</span>
+      <span class="des-money">{{month}}月结余</span>
     </div>
     <div class="detail">
       <div>
@@ -33,7 +33,12 @@ import dayjs from "dayjs";
 
 @Component
 export default class MoneyHead extends Vue {
-  created() {}
+  created() {
+    this.$store.commit("fetchRecords");
+  }
+  mounted() {
+    console.log(this.recordList);
+  }
   year = dayjs()
     .year()
     .toString();
@@ -50,7 +55,22 @@ export default class MoneyHead extends Vue {
     }
     return result;
   }
-
+  // 获取账单表
+  get recordList() {
+    return this.$store.state.recordList;
+  }
+  // 获取当月结余
+  get monthBalance() {
+    const currentRecordList = this.recordList.filter((i: RecordItem) => {
+      return (dayjs(i.createdAt).month() + 1).toString() === this.month;
+    });
+    let balance = 0;
+    for (let i = 0; i < currentRecordList.length; i++) {
+      balance += currentRecordList[i].amount;
+    }
+    // 保留两位小数
+    return balance.toFixed(2);
+  }
   @Watch("year")
   logYear() {
     console.log(this.year);
@@ -102,14 +122,10 @@ header {
       text-align: center;
       background: #212121;
       color: #fff;
-      //清除select的边框样式
       border: none;
-      //清除select聚焦时候的边框颜色
       outline: none;
-      //将select的宽高等于div的宽高
       height: 30px;
       line-height: 30px;
-      //隐藏select的下拉图标
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;

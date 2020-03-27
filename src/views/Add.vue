@@ -89,15 +89,18 @@ export default class Add extends Vue {
 
   // 存储数据
   createRecord(value1: string, value2: string) {
+    if (value1 === "0") {
+      this.$toast.show(`金额不能为0`);
+      return;
+    }
     this.record.amount = parseFloat(value1);
     this.record.notes = value2;
     this.record.type = this.type;
     this.record.tag = this.tagList.filter((item: Tag) => {
       return item.id === this.selectedId;
     })[0];
-    console.log(this.record);
     const typeString = this.type === "-" ? "支出" : "收入";
-    this.$toast.show(`已添加${typeString}`);
+    this.$toast.show(`已添加${typeString}${value1}元`);
     this.$store.commit("createRecord", this.record);
   }
 }
