@@ -3,7 +3,7 @@
     <Layout>
       <div class="head">
         <money-head />
-        <money-today />
+        <money-list />
       </div>
 
       <Scroll class="content">
@@ -20,14 +20,14 @@ import { Component } from "vue-property-decorator";
 import Scroll from "@/components/common/Scroll.vue";
 
 import MoneyHead from "@/components/money/MoneyHead.vue";
-import MoneyToday from "@/components/money/MoneyToday.vue";
+import MoneyList from "@/components/money/MoneyList.vue";
 import MoneyContent from "@/components/money/MoneyContent.vue";
 
 @Component({
   components: {
     Scroll,
     MoneyHead,
-    MoneyToday,
+    MoneyList,
     MoneyContent
   }
 })

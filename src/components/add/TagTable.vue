@@ -54,8 +54,8 @@ export default class IncomeList extends Vue {
     .icon {
       background: #ddd;
       color: #000;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       padding: 10px;
       border-radius: 50%;
       margin-bottom: 4px;

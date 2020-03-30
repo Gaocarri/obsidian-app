@@ -638,14 +638,14 @@ export default class TagList extends Vue {
 
 # Money.vue的封装
 
-1. 封装MoneyHead.vue,MoneyToday.vue和MoneyContent.vue并引入Money
+1. 封装MoneyHead.vue,MoneyList.vue和MoneyContent.vue并引入Money
 
 ```
    <template>
      <div>
        <Layout>
          <money-head />
-         <money-today />
+         <money-list />
          <money-content />
        </Layout>
      </div>
@@ -654,7 +654,53 @@ export default class TagList extends Vue {
 
 
 
+2. MoneyHead的封装
 
+* 下拉选择日期
+  * 使用year和month保存选中的年份，使用years和month保存选项们
 
-## 已经存储了recordList 接下来要做Money.vue了
-需要一个日期选择器
+  ```
+   <select name="year" v-model="year" class="year">
+          <option v-for="y in years" :value="y" :key="y">{{y}}年</option>
+   </select>
+  ```
+
+  * filter函数获取当前日期的recordList的amount，这里以结余为例
+
+  ```
+    get monthBalance() {
+      // 支出
+      const expendRecordList = this.recordList.filter((i: RecordItem) => {
+        return (
+          dayjs(i.createdAt)
+            .year()
+            .toString() === this.year &&
+          (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+          i.type === "-"
+        );
+      });
+      // 收入
+      const includeRecordList = this.recordList.filter((i: RecordItem) => {
+        return (
+          dayjs(i.createdAt)
+            .year()
+            .toString() === this.year &&
+          (dayjs(i.createdAt).month() + 1).toString() === this.month &&
+          i.type === "+"
+        );
+      });
+      let balance = 0;
+      for (let i = 0; i < expendRecordList.length; i++) {
+        balance -= expendRecordList[i].amount;
+      }
+      for (let i = 0; i < includeRecordList.length; i++) {
+        balance += includeRecordList[i].amount;
+      }
+      // 保留两位小数
+      return balance.toFixed(2);
+    }
+  ```
+
+  
+
+## 该展示每个日期支出收入了

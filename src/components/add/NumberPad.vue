@@ -49,6 +49,11 @@ export default class NotePad extends Vue {
       }
       return;
     }
+    // 防止等号相邻重复
+    if (this.output[this.output.length - 1] === "+" && input === "+") {
+      return;
+    }
+    // 防止小数点重复
     if (this.output.indexOf(".") >= 0 && input === ".") {
       const temp = this.output.split("+");
       if (temp[temp.length - 1].indexOf(".") >= 0) {
