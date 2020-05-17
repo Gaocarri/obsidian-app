@@ -38,7 +38,7 @@ type Data = {
 };
 
 @Component
-export default class MoneyToday extends Vue {
+export default class MoneyList extends Vue {
   mounted() {
     console.log(this.dataList);
   }

@@ -6,6 +6,7 @@ const Money = () => import('../views/Money.vue')
 const Add = () => import('../views/Add.vue')
 const Statistics = () => import('../views/Statistics.vue')
 const Tags = () => import('../views/Tags.vue')
+const NotFound = () => import('../views/NotFound.vue')
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,10 @@ const routes = [
   {
     path: '/tags',
     component: Tags
+  },
+  {
+    path: '*',
+    component: NotFound
   }
 ]
 
