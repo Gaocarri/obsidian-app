@@ -45,7 +45,6 @@ export default class MoneyToday extends Vue {
   // 数据
   get dataList() {
     let dataList = [];
-    console.log(this.$store.state.recordList);
     for (let i = 0; i < this.$store.state.recordList.length; i++) {
       const data = {
         y: 0,
@@ -132,6 +131,7 @@ header {
       display: flex;
       align-items: center;
       .icon {
+        vertical-align: top;
         border-radius: 50%;
         background: #000;
         color: #ddd;
@@ -139,7 +139,7 @@ header {
         width: 40px;
         height: 40px;
         margin-bottom: 10px;
-        margin-right: 12px;
+        margin-right: 14px;
       }
       span {
         vertical-align: middle;

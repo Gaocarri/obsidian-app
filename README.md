@@ -703,4 +703,75 @@ export default class TagList extends Vue {
 
   
 
-## 展示每个日期支出收入了
+## 展示每个日期支出收入
+
+1. 这里需要的就是将同一日期的recordItem存到一起，所以同样需要引入dayjs对日期进行处理
+
+2. 使用计算属性获得所需数据
+
+```typescript
+// 数据
+  get dataList() {
+    let dataList = [];
+    console.log(this.$store.state.recordList);
+    for (let i = 0; i < this.$store.state.recordList.length; i++) {
+      const data = {
+        y: 0,
+        m: 0,
+        d: 0,
+        record: []
+      } as Data;
+      data.y = dayjs(this.$store.state.recordList[i].createdAt).year();
+      data.m = dayjs(this.$store.state.recordList[i].createdAt).month() + 1;
+      data.d = dayjs(this.$store.state.recordList[i].createdAt).date();
+
+      // 判断日期是否为同一天
+      if (i == 0) {
+        // 存入recordItem
+        data.record.push(this.$store.state.recordList[0]);
+        dataList.push(data);
+      } else if (
+        // 日期不重复的情况
+        data.y != dayjs(this.$store.state.recordList[i - 1].createdAt).year() ||
+        data.m !=
+          dayjs(this.$store.state.recordList[i - 1].createdAt).month() + 1 ||
+        data.d != dayjs(this.$store.state.recordList[i - 1].createdAt).date()
+      ) {
+        // 存入recordItem
+        data.record.push(this.$store.state.recordList[i]);
+        dataList.push(data);
+      } else {
+        dataList[dataList.length - 1].record.push(
+          this.$store.state.recordList[i]
+        );
+      }
+    }
+    return dataList;
+  }
+```
+
+3. 对当日收入和支出进行一次计算
+
+```typescript
+// 获取当日支出
+  getExpend(data: Data) {
+    let expend = 0;
+    for (let i = 0; i < data.record.length; i++) {
+      if (data.record[i].type === "-") {
+        expend += data.record[i].amount;
+      }
+    }
+    return expend.toFixed(2);
+  }
+  // 获取当日收入
+  getInclude(data: Data) {
+    let include = 0;
+    for (let i = 0; i < data.record.length; i++) {
+      if (data.record[i].type === "+") {
+        include += data.record[i].amount;
+      }
+    }
+    return include.toFixed(2);
+  }
+```
+

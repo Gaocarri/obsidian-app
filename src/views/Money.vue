@@ -6,8 +6,8 @@
       </div>
 
       <Scroll class="content">
-        <money-list />
-        <!-- <money-content /> -->
+        <money-list v-if="recordLength>0" />
+        <money-blank v-else />
       </Scroll>
     </Layout>
   </div>
@@ -21,17 +21,21 @@ import Scroll from "@/components/common/Scroll.vue";
 
 import MoneyHead from "@/components/money/MoneyHead.vue";
 import MoneyList from "@/components/money/MoneyList.vue";
-import MoneyContent from "@/components/money/MoneyContent.vue";
+import MoneyBlank from "@/components/money/MoneyBlank.vue";
 
 @Component({
   components: {
     Scroll,
     MoneyHead,
     MoneyList,
-    MoneyContent
+    MoneyBlank
   }
 })
-export default class Money extends Vue {}
+export default class Money extends Vue {
+  get recordLength() {
+    return this.$store.state.recordList.length;
+  }
+}
 </script>
 
 <style lang='scss' scoped>
