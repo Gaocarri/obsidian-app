@@ -6,7 +6,7 @@
       </div>
 
       <Scroll class="content">
-        <money-list v-if="recordLength>0" />
+        <money-list v-if="length>0" />
         <money-blank v-else />
       </Scroll>
     </Layout>
@@ -23,6 +23,8 @@ import MoneyHead from "@/components/money/MoneyHead.vue";
 import MoneyList from "@/components/money/MoneyList.vue";
 import MoneyBlank from "@/components/money/MoneyBlank.vue";
 
+import dayjs from "dayjs";
+
 @Component({
   components: {
     Scroll,
@@ -32,8 +34,13 @@ import MoneyBlank from "@/components/money/MoneyBlank.vue";
   }
 })
 export default class Money extends Vue {
-  get recordLength() {
-    return this.$store.state.recordList.length;
+  get length() {
+    return this.$store.state.recordList.filter((item: RecordItem) => {
+      return (
+        dayjs(item.createdAt).year() == this.$store.state.currentYear &&
+        dayjs(item.createdAt).month() + 1 == this.$store.state.currentMonth
+      );
+    }).length;
   }
 }
 </script>

@@ -775,3 +775,40 @@ export default class TagList extends Vue {
   }
 ```
 
+4. 如何展示首页最上方年月的记录
+
+* 首先需要在store中记录当前的年月（需要引入dayjs）
+* 在MoneyHead中的select，监听年月的变化从而commit更改store的当前年月
+* 在MoneyList使用filter函数获得当前年月的记录
+
+```typescript
+  // 获取首页展示的年月
+  get year() {
+    return this.$store.state.currentYear;
+  }
+  get month() {
+    return this.$store.state.currentMonth;
+  }
+  get currentRecordList() {
+    const currentRecordList = this.$store.state.recordList.filter(
+      (item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).year() == this.year &&
+          dayjs(item.createdAt).month() + 1 == this.month
+        );
+      }
+    );
+    return currentRecordList;
+  }
+```
+
+* 另外使用currentYear和currentMoney获取当前记录的长度，在Money.vue中利用v-if以获得要显示的内容
+
+```
+
+      <Scroll class="content">
+        <money-list v-if="length>0" />
+        <money-blank v-else />
+      </Scroll>
+```
+

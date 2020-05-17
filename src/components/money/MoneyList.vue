@@ -42,39 +42,54 @@ export default class MoneyToday extends Vue {
   mounted() {
     console.log(this.dataList);
   }
+  // 获取首页展示的年月
+  get year() {
+    return this.$store.state.currentYear;
+  }
+  get month() {
+    return this.$store.state.currentMonth;
+  }
+  get currentRecordList() {
+    const currentRecordList = this.$store.state.recordList.filter(
+      (item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).year() == this.year &&
+          dayjs(item.createdAt).month() + 1 == this.month
+        );
+      }
+    );
+    return currentRecordList;
+  }
   // 数据
   get dataList() {
     let dataList = [];
-    for (let i = 0; i < this.$store.state.recordList.length; i++) {
+    for (let i = 0; i < this.currentRecordList.length; i++) {
       const data = {
         y: 0,
         m: 0,
         d: 0,
         record: []
       } as Data;
-      data.y = dayjs(this.$store.state.recordList[i].createdAt).year();
-      data.m = dayjs(this.$store.state.recordList[i].createdAt).month() + 1;
-      data.d = dayjs(this.$store.state.recordList[i].createdAt).date();
+      data.y = dayjs(this.currentRecordList[i].createdAt).year();
+      data.m = dayjs(this.currentRecordList[i].createdAt).month() + 1;
+      data.d = dayjs(this.currentRecordList[i].createdAt).date();
 
       // 判断日期是否为同一天
       if (i == 0) {
         // 存入recordItem
-        data.record.push(this.$store.state.recordList[0]);
+        data.record.push(this.currentRecordList[0]);
         dataList.push(data);
       } else if (
         // 日期不重复的情况
-        data.y != dayjs(this.$store.state.recordList[i - 1].createdAt).year() ||
-        data.m !=
-          dayjs(this.$store.state.recordList[i - 1].createdAt).month() + 1 ||
-        data.d != dayjs(this.$store.state.recordList[i - 1].createdAt).date()
+        data.y != dayjs(this.currentRecordList[i - 1].createdAt).year() ||
+        data.m != dayjs(this.currentRecordList[i - 1].createdAt).month() + 1 ||
+        data.d != dayjs(this.currentRecordList[i - 1].createdAt).date()
       ) {
         // 存入recordItem
-        data.record.push(this.$store.state.recordList[i]);
+        data.record.push(this.currentRecordList[i]);
         dataList.push(data);
       } else {
-        dataList[dataList.length - 1].record.push(
-          this.$store.state.recordList[i]
-        );
+        dataList[dataList.length - 1].record.push(this.currentRecordList[i]);
       }
     }
     return dataList;

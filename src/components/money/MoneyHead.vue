@@ -124,12 +124,12 @@ export default class MoneyHead extends Vue {
   }
 
   @Watch("year")
-  logYear() {
-    console.log(this.year);
+  editYear() {
+    this.$store.commit("editYear", this.year);
   }
   @Watch("month")
-  logMonth() {
-    console.log(this.month);
+  editMonth() {
+    this.$store.commit("editMonth", this.month);
   }
 }
 </script>
