@@ -5,7 +5,7 @@
         <money-head />
       </div>
 
-      <Scroll class="content">
+      <Scroll class="content" ref="scroll">
         <money-list v-if="length>0" />
         <money-blank v-else />
       </Scroll>
@@ -34,6 +34,11 @@ import dayjs from "dayjs";
   }
 })
 export default class Money extends Vue {
+  created() {
+    this.$store.commit("fetchRecords");
+    this.$store.commit("editYear", dayjs().year());
+    this.$store.commit("editMonth", dayjs().month() + 1);
+  }
   get length() {
     return this.$store.state.recordList.filter((item: RecordItem) => {
       return (

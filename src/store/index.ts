@@ -73,6 +73,29 @@ const store = new Vuex.Store({
       state.recordList.push(record2);
       store.commit('saveRecords')
     },
+    editRecord(state, record) {
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].numberId == record.numberId) {
+          state.recordList[i].amount = record.amount
+          state.recordList[i].notes = record.notes
+          break
+        }
+      }
+      store.commit('saveRecords')
+    },
+    deleteRecord(state, id) {
+      let index: number = -1
+      for (let i = 0; i < state.recordList.length; i++) {
+        if (state.recordList[i].numberId == id) {
+          index = i
+          break
+        }
+      }
+      if (index >= 0) {
+        state.recordList.splice(index, 1)
+      }
+      store.commit('saveRecords')
+    },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
     },

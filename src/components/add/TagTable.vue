@@ -1,6 +1,6 @@
 <template>
   <ul class="tags-table">
-    <li v-for="tag in tagList" :key="tag.id" class="tag-item">
+    <li v-for="(tag,index) in tagList" :key="index" class="tag-item">
       <Icon
         :name="tag.name"
         class="icon"
@@ -21,7 +21,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class IncomeList extends Vue {
+export default class TagTable extends Vue {
   @Prop() tagList?: Tag[];
   @Prop() selectedId!: number;
   @Prop({ default: "-" }) type?: string;

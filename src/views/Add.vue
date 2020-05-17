@@ -45,7 +45,8 @@ export default class Add extends Vue {
     tag: {},
     notes: "",
     type: "-",
-    amount: 0
+    amount: 0,
+    numberId: "0"
   };
 
   get tagList() {

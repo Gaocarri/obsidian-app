@@ -23,6 +23,9 @@ export default class Scroll extends Vue {
       });
     }
   }
+  refresh() {
+    this.scroll && this.scroll.refresh();
+  }
 }
 </script>
 

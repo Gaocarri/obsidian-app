@@ -37,8 +37,8 @@ export default class extends Vue {
   .icon {
     position: absolute;
     left: 10px;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     top: 50%;
     margin-top: -9px;
   }

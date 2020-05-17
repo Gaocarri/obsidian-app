@@ -812,3 +812,15 @@ export default class TagList extends Vue {
       </Scroll>
 ```
 
+## EditLabel页面
+
+1. 困扰我一个非常久的Bug,input表单输入数字结果不为数字
+
+   正确的解决办法
+
+   ```
+   <input type="text" v-model.number.trim="recordItem.amount" />
+   ```
+
+   * 其实就是在v-model后面加上.number和.trim修饰符
+   * 两者缺一不可

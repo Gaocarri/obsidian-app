@@ -33,9 +33,6 @@ import dayjs from "dayjs";
 
 @Component
 export default class MoneyHead extends Vue {
-  created() {
-    this.$store.commit("fetchRecords");
-  }
   year = dayjs()
     .year()
     .toString();
@@ -101,7 +98,7 @@ export default class MoneyHead extends Vue {
     });
     let expend = 0;
     for (let i = 0; i < expendRecordList.length; i++) {
-      expend += expendRecordList[i].amount;
+      expend += parseFloat(expendRecordList[i].amount);
     }
     return expend.toFixed(2);
   }
@@ -118,7 +115,7 @@ export default class MoneyHead extends Vue {
     });
     let include = 0;
     for (let i = 0; i < includeRecordList.length; i++) {
-      include += includeRecordList[i].amount;
+      include += parseFloat(includeRecordList[i].amount);
     }
     return include.toFixed(2);
   }

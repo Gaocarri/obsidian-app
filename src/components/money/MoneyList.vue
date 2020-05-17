@@ -43,22 +43,13 @@ type Data = {
 
 @Component
 export default class MoneyList extends Vue {
-  mounted() {
-    console.log(this.dataList);
-  }
   // 获取首页展示的年月
-  get year() {
-    return this.$store.state.currentYear;
-  }
-  get month() {
-    return this.$store.state.currentMonth;
-  }
   get currentRecordList() {
     const currentRecordList = this.$store.state.recordList.filter(
       (item: RecordItem) => {
         return (
-          dayjs(item.createdAt).year() == this.year &&
-          dayjs(item.createdAt).month() + 1 == this.month
+          dayjs(item.createdAt).year() == this.$store.state.currentYear &&
+          dayjs(item.createdAt).month() + 1 == this.$store.state.currentMonth
         );
       }
     );
@@ -119,7 +110,7 @@ export default class MoneyList extends Vue {
     return include.toFixed(2);
   }
   // 点击跳转至标签编辑页
-  linkToEditLabel(number: number) {
+  linkToEditLabel(number: string) {
     this.$router.push(`/money/editLabel/${number}`);
   }
 }

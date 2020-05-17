@@ -13,7 +13,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class tagsNav extends Vue {
+export default class TagsNav extends Vue {
   @Prop() selectedTag!: Tag;
   clicked: boolean = false;
   back() {
@@ -38,7 +38,7 @@ header {
   text-align: center;
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 10px 10px 20px;
   .back {
     width: 18px;
     height: 18px;
