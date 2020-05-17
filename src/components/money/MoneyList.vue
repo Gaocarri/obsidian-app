@@ -9,9 +9,12 @@
         </div>
       </header>
       <ul class="icons">
-        <li v-for="tag in data.tag" :key="tag.id">
-          <Icon class="icon" :name="tag.name" />
-          <span>{{tag.name}}</span>
+        <li v-for="(tag,index2) in data.tag" :key="index2">
+          <div class="left">
+            <Icon class="icon" :name="tag.name" />
+            <span>{{tag.name}}</span>
+          </div>
+          <span class="right">{{parseFloat(data.money[index2]).toFixed(2)}}</span>
         </li>
       </ul>
     </div>
@@ -42,7 +45,8 @@ export default class MoneyToday extends Vue {
         d: 0,
         include: 0,
         expend: 0,
-        tag: [] as Tag[]
+        tag: [] as Tag[],
+        money: [] as String[]
       };
       data.y = dayjs(this.$store.state.recordList[i].createdAt).year();
       data.m = dayjs(this.$store.state.recordList[i].createdAt).month() + 1;
@@ -52,6 +56,12 @@ export default class MoneyToday extends Vue {
       if (i == 0) {
         // 存入tag
         data.tag.push(this.$store.state.recordList[i].tag);
+        // 存入每个tag的花销
+        if (this.$store.state.recordList[i].type === "+") {
+          data.money.push("+" + this.$store.state.recordList[i].amount);
+        } else if (this.$store.state.recordList[i].type === "-") {
+          data.money.push("-" + this.$store.state.recordList[i].amount);
+        }
         // 计算收入和支出
         if (this.$store.state.recordList[i].type === "+") {
           data.include = this.$store.state.recordList[i].amount;
@@ -68,6 +78,12 @@ export default class MoneyToday extends Vue {
       ) {
         // 存入tag
         data.tag.push(this.$store.state.recordList[i].tag);
+        // 存入每个tag的花销
+        if (this.$store.state.recordList[i].type === "+") {
+          data.money.push("+" + this.$store.state.recordList[i].amount);
+        } else if (this.$store.state.recordList[i].type === "-") {
+          data.money.push("-" + this.$store.state.recordList[i].amount);
+        }
         // 计算收入和支出
         if (this.$store.state.recordList[i].type === "+") {
           data.include = this.$store.state.recordList[i].amount;
@@ -85,8 +101,17 @@ export default class MoneyToday extends Vue {
         for (let i = 0; i < temp!.tag.length; i++) {
           data.tag.push(temp!.tag[i]);
         }
+        for (let i = 0; i < temp!.money.length; i++) {
+          data.money.push(temp!.money[i]);
+        }
         // 存入当前tag
         data.tag.push(this.$store.state.recordList[i].tag);
+        // 存入当前每个tag的花销
+        if (this.$store.state.recordList[i].type === "+") {
+          data.money.push("+" + this.$store.state.recordList[i].amount);
+        } else if (this.$store.state.recordList[i].type === "-") {
+          data.money.push("-" + this.$store.state.recordList[i].amount);
+        }
         if (this.$store.state.recordList[i].type === "+") {
           data.include += this.$store.state.recordList[i].amount;
         } else if (this.$store.state.recordList[i].type === "-") {
@@ -120,18 +145,29 @@ header {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  padding: 10px 0 10px 10px;
-  .icon {
-    border-radius: 50%;
-    background: #000;
-    color: #ddd;
-    padding: 8px;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-  }
-  span {
-    font-size: 14px;
+  padding: 10px;
+  > li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > .left {
+      display: flex;
+      align-items: center;
+      .icon {
+        border-radius: 50%;
+        background: #000;
+        color: #ddd;
+        padding: 8px;
+        width: 40px;
+        height: 40px;
+        margin-bottom: 10px;
+        margin-right: 12px;
+      }
+      span {
+        vertical-align: middle;
+        font-size: 16px;
+      }
+    }
   }
 }
 </style>

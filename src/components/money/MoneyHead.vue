@@ -147,6 +147,7 @@ header {
   font-weight: 500;
   text-align: center;
   font-size: 18px;
+  height: 170px;
   .title {
     margin-top: 10px;
     margin-bottom: 4px;

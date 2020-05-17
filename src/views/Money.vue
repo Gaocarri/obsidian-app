@@ -3,10 +3,10 @@
     <Layout>
       <div class="head">
         <money-head />
-        <money-list />
       </div>
 
       <Scroll class="content">
+        <money-list />
         <!-- <money-content /> -->
       </Scroll>
     </Layout>
@@ -47,7 +47,7 @@ export default class Money extends Vue {}
   overflow: hidden;
   left: 0;
   right: 0;
-  top: 210px;
+  top: 170px;
   bottom: 54px;
 }
 </style>
