@@ -9,5 +9,6 @@ type RecordItem = {
   type: string;
   amount: number;
   createdAt?: string;
+  numberId: string
 }
 

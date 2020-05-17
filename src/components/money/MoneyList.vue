@@ -9,7 +9,11 @@
         </div>
       </header>
       <ul class="icons">
-        <li v-for="(recordItem,index2) in data.record" :key="index2">
+        <li
+          v-for="(recordItem,index2) in data.record"
+          :key="index2"
+          @click="linkToEditLabel(recordItem.numberId)"
+        >
           <div class="left">
             <Icon class="icon" :name="recordItem.tag.name" />
             <span>{{recordItem.tag.name}}</span>
@@ -113,6 +117,10 @@ export default class MoneyList extends Vue {
       }
     }
     return include.toFixed(2);
+  }
+  // 点击跳转至标签编辑页
+  linkToEditLabel(number: number) {
+    this.$router.push(`/money/editLabel/${number}`);
   }
 }
 </script>

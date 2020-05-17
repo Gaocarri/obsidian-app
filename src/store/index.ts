@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 
-import clone from '@/lib/clone'
 import dayjs from 'dayjs'
+
+import clone from '@/lib/clone'
+import createNumberId from '@/lib/createNumberId'
+
 
 Vue.use(Vuex)
 
@@ -11,7 +14,7 @@ type RootState = {
   tagList: Tag[];
   recordList: RecordItem[];
   currentMonth: number;
-  currentYear: number
+  currentYear: number;
 }
 
 const store = new Vuex.Store({
@@ -20,7 +23,7 @@ const store = new Vuex.Store({
     tagList: [],
     recordList: [],
     currentMonth: dayjs().month() + 1,
-    currentYear: dayjs().year()
+    currentYear: dayjs().year(),
   } as RootState,
   mutations: {
     // toastMessage方法
@@ -66,6 +69,7 @@ const store = new Vuex.Store({
     createRecord(state, record) {
       const record2: RecordItem = clone(record);
       record2.createdAt = new Date().toISOString();
+      record2.numberId = createNumberId()
       state.recordList.push(record2);
       store.commit('saveRecords')
     },
