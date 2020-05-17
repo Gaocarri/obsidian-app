@@ -4,17 +4,19 @@
       <header>
         <div class="date">{{data.y}}年{{data.m}}月{{data.d}}日</div>
         <div class="balance">
-          <span class="balance-expend">支出:{{data.expend.toFixed(2)}}</span>
-          <span>收入:{{data.include.toFixed(2)}}</span>
+          <span class="balance-expend">支出:{{getExpend(data)}}</span>
+          <span>收入:{{getInclude(data)}}</span>
         </div>
       </header>
       <ul class="icons">
-        <li v-for="(tag,index2) in data.tag" :key="index2">
+        <li v-for="(recordItem,index2) in data.record" :key="index2">
           <div class="left">
-            <Icon class="icon" :name="tag.name" />
-            <span>{{tag.name}}</span>
+            <Icon class="icon" :name="recordItem.tag.name" />
+            <span>{{recordItem.tag.name}}</span>
           </div>
-          <span class="right">{{parseFloat(data.money[index2]).toFixed(2)}}</span>
+          <span
+            class="right"
+          >{{recordItem.type==='+'?(recordItem.amount.toFixed(2)):('-'+recordItem.amount.toFixed(2))}}</span>
         </li>
       </ul>
     </div>
@@ -28,12 +30,18 @@ import { Component } from "vue-property-decorator";
 import dayjs from "dayjs";
 import obj from "../common/toast";
 
+type Data = {
+  y: Number;
+  m: Number;
+  d: Number;
+  record: RecordItem[];
+};
+
 @Component
 export default class MoneyToday extends Vue {
   mounted() {
     console.log(this.dataList);
   }
-
   // 数据
   get dataList() {
     let dataList = [];
@@ -43,31 +51,16 @@ export default class MoneyToday extends Vue {
         y: 0,
         m: 0,
         d: 0,
-        include: 0,
-        expend: 0,
-        tag: [] as Tag[],
-        money: [] as String[]
-      };
+        record: []
+      } as Data;
       data.y = dayjs(this.$store.state.recordList[i].createdAt).year();
       data.m = dayjs(this.$store.state.recordList[i].createdAt).month() + 1;
       data.d = dayjs(this.$store.state.recordList[i].createdAt).date();
 
       // 判断日期是否为同一天
       if (i == 0) {
-        // 存入tag
-        data.tag.push(this.$store.state.recordList[i].tag);
-        // 存入每个tag的花销
-        if (this.$store.state.recordList[i].type === "+") {
-          data.money.push("+" + this.$store.state.recordList[i].amount);
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.money.push("-" + this.$store.state.recordList[i].amount);
-        }
-        // 计算收入和支出
-        if (this.$store.state.recordList[i].type === "+") {
-          data.include = this.$store.state.recordList[i].amount;
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.expend = this.$store.state.recordList[i].amount;
-        }
+        // 存入recordItem
+        data.record.push(this.$store.state.recordList[0]);
         dataList.push(data);
       } else if (
         // 日期不重复的情况
@@ -76,51 +69,36 @@ export default class MoneyToday extends Vue {
           dayjs(this.$store.state.recordList[i - 1].createdAt).month() + 1 ||
         data.d != dayjs(this.$store.state.recordList[i - 1].createdAt).date()
       ) {
-        // 存入tag
-        data.tag.push(this.$store.state.recordList[i].tag);
-        // 存入每个tag的花销
-        if (this.$store.state.recordList[i].type === "+") {
-          data.money.push("+" + this.$store.state.recordList[i].amount);
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.money.push("-" + this.$store.state.recordList[i].amount);
-        }
-        // 计算收入和支出
-        if (this.$store.state.recordList[i].type === "+") {
-          data.include = this.$store.state.recordList[i].amount;
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.expend = this.$store.state.recordList[i].amount;
-        }
+        // 存入recordItem
+        data.record.push(this.$store.state.recordList[i]);
         dataList.push(data);
       } else {
-        // 日期重复的情况
-        const temp = dataList.pop();
-        // 计算收入和支出
-        data.include = temp!.include;
-        data.expend = temp!.expend;
-        // 存入相同日期的tag
-        for (let i = 0; i < temp!.tag.length; i++) {
-          data.tag.push(temp!.tag[i]);
-        }
-        for (let i = 0; i < temp!.money.length; i++) {
-          data.money.push(temp!.money[i]);
-        }
-        // 存入当前tag
-        data.tag.push(this.$store.state.recordList[i].tag);
-        // 存入当前每个tag的花销
-        if (this.$store.state.recordList[i].type === "+") {
-          data.money.push("+" + this.$store.state.recordList[i].amount);
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.money.push("-" + this.$store.state.recordList[i].amount);
-        }
-        if (this.$store.state.recordList[i].type === "+") {
-          data.include += this.$store.state.recordList[i].amount;
-        } else if (this.$store.state.recordList[i].type === "-") {
-          data.expend += this.$store.state.recordList[i].amount;
-        }
-        dataList.push(data);
+        dataList[dataList.length - 1].record.push(
+          this.$store.state.recordList[i]
+        );
       }
     }
     return dataList;
+  }
+  // 获取当日支出
+  getExpend(data: Data) {
+    let expend = 0;
+    for (let i = 0; i < data.record.length; i++) {
+      if (data.record[i].type === "-") {
+        expend += data.record[i].amount;
+      }
+    }
+    return expend.toFixed(2);
+  }
+  // 获取当日收入
+  getInclude(data: Data) {
+    let include = 0;
+    for (let i = 0; i < data.record.length; i++) {
+      if (data.record[i].type === "+") {
+        include += data.record[i].amount;
+      }
+    }
+    return include.toFixed(2);
   }
 }
 </script>
