@@ -7,7 +7,7 @@
       </div>
 
       <Scroll class="content">
-        <money-content />
+        <!-- <money-content /> -->
       </Scroll>
     </Layout>
   </div>

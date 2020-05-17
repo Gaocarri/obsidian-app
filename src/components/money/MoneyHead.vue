@@ -36,9 +36,6 @@ export default class MoneyHead extends Vue {
   created() {
     this.$store.commit("fetchRecords");
   }
-  mounted() {
-    console.log(this.recordList);
-  }
   year = dayjs()
     .year()
     .toString();
