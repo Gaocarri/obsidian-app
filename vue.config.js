@@ -11,7 +11,7 @@ module.exports = {
     }
   },
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/Obsidian-app/'
+    ? '/obsidian-website/'
     : '/',
   lintOnSave: false,
   chainWebpack: config => {

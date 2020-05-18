@@ -8,8 +8,8 @@
 export default {
   name: "App",
   mounted() {
-    console.log(JSON.parse(window.localStorage.getItem("tagList")).length);
-    if (JSON.parse(window.localStorage.getItem("tagList")).length === 0) {
+    // 初始化六个标签
+    if (window.localStorage.getItem("tagList") == null) {
       this.$store.commit("createTag", { name: "餐饮", id: 1 });
       this.$store.commit("createTag", { name: "购物", id: 7 });
       this.$store.commit("createTag", { name: "交通", id: 14 });

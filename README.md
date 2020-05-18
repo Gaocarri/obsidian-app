@@ -1,6 +1,12 @@
 # 黑曜石记账
 
-...
+* 平台：手机
+* 功能：
+  * 记账：金额 标签 备注 类型
+  * 管理标签：添加 删除
+  * 账目：修改账目
+  * 统计：包括echarts制作柱状图
+  * 查看：按周 月 年查看
 
 # 路由配置
 
@@ -1101,3 +1107,60 @@ getTagMoney() {
   }
 ```
 
+# 部署
+
+按照官方文档的指示 检查dist是否打包正确
+
+```
+yarn build 
+
+yarn global add serve  # 全局安装serve
+
+serve -s dist
+```
+
+部署到gitHub my-project===我的仓库名
+
+```
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/my-project/'
+    : '/'
+}
+```
+
+创建deploy.sh
+
+```
+#!/usr/bin/env sh
+
+# 当发生错误时中止脚本
+set -e
+
+# 构建
+yarn build
+
+# cd 到构建输出的目录下 
+cd dist
+
+# 部署到自定义域域名
+# echo 'www.example.com' > CNAME
+
+git init
+git add -A
+git commit -m 'deploy'
+
+# 部署到 https://<USERNAME>.github.io
+# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
+
+# 部署到 https://<USERNAME>.github.io/<REPO>
+git push -f git@github.com:Gaocarri/Money-website.git master:gh-pages
+
+cd -
+```
+
+部署 新建一个仓库
+
+```
+sh deploy.sh
+```

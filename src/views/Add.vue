@@ -14,7 +14,7 @@
     </Scroll>
 
     <div class="number-pad">
-      <NumberPad @createRecord="createRecord" />
+      <NumberPad :type="type" @createRecord="createRecord" />
     </div>
   </div>
 </template>
@@ -75,6 +75,7 @@ export default class Add extends Vue {
   }
   // 删除标签
   deleteTag() {
+    if (this.$store.state.tagList.length == 0) return;
     this.buttonSelected = !this.buttonSelected;
     window.setTimeout(() => {
       this.buttonSelected = !this.buttonSelected;
