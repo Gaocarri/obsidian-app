@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>本周</div>
+    <div class="chart-title">{{chartTitle}}</div>
     <div id="myEcharts" style="width:100vw ;height:30vh;"></div>
   </div>
 </template>
@@ -29,6 +29,22 @@ export default class StatisticsChart extends Vue {
 
   x: any[] = [];
   y: any[] = [];
+  get chartTitle() {
+    switch (this.ymw) {
+      case "year":
+        return "本年";
+        break;
+      case "month":
+        return "本月";
+        break;
+      case "week":
+        return "本周";
+        break;
+      default:
+        return "本周";
+    }
+    return [];
+  }
 
   // 获取横坐标名称
   getXName() {
@@ -41,7 +57,7 @@ export default class StatisticsChart extends Vue {
     let data: string[] = [];
     switch (this.ymw) {
       case "week":
-        data = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+        data = ["周日", "周二", "周三", "周四", "周五", "周六", "周一"];
         break;
       case "month":
         data = dayArray.map(i => i + "日");
@@ -63,7 +79,7 @@ export default class StatisticsChart extends Vue {
         ];
         break;
       default:
-        data = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+        data = ["周日", "周二", "周三", "周四", "周五", "周六", "周一"];
     }
     this.x = data;
   }
@@ -100,13 +116,31 @@ export default class StatisticsChart extends Vue {
       });
       for (let i = 0; i < day; i++) {
         for (let j = 0; j < record.length; j++) {
-          if (i == dayjs(record[j].created).date()) {
-            data[i] = record[j].amount;
+          if (i == dayjs(record[j].createdAt).date()) {
+            data[i] += record[j].amount;
           }
         }
       }
     } else if (this.ymw == "year") {
       // 当前的选择是年
+      const year = dayjs().year();
+      for (let i = 0; i < 12; i++) {
+        data.push(0);
+      }
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs().year() == dayjs(item.createdAt).year() &&
+          this.type == item.type
+        );
+      });
+      console.log(record);
+      for (let i = 0; i < 12; i++) {
+        for (let j = 0; j < record.length; j++) {
+          if (i == dayjs(record[j].createdAt).month() + 1) {
+            data[i] += record[j].amount;
+          }
+        }
+      }
     }
     this.y = data;
   }
@@ -173,4 +207,10 @@ export default class StatisticsChart extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.chart-title {
+  margin-top: 10px;
+  padding: 6px 10px;
+  width: 100vw;
+  background-color: #eee;
+}
 </style>
