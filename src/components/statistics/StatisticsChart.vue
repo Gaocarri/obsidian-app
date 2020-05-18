@@ -2,6 +2,17 @@
   <div>
     <div class="chart-title">{{chartTitle}}</div>
     <div id="myEcharts" style="width:100vw ;height:30vh;"></div>
+    <div class="money-title">{{chartTitle}}{{type=='-'?'支出':'收入'}}排行榜</div>
+    <ul v-for="(tag,name) in tagList" :key="name">
+      <li class="board">
+        <div class="left">
+          <Icon class="icon" :name="tag[0]" />
+          <div class="name">{{tag[0]}}</div>
+          <div class="percent">{{getTotalMoney(tag[1])}}</div>
+        </div>
+        <div class="right">{{tag[1].toFixed(2)}}</div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -23,12 +34,14 @@ export default class StatisticsChart extends Vue {
   mounted() {
     this.getTotal();
     this.getXName();
+    this.getTagMoney();
     this.draw();
-    console.log(dayjs().month());
   }
 
   x: any[] = [];
   y: any[] = [];
+  // 标签对应价格
+  tagList: any = {};
   get chartTitle() {
     switch (this.ymw) {
       case "year":
@@ -133,7 +146,6 @@ export default class StatisticsChart extends Vue {
           this.type == item.type
         );
       });
-      console.log(record);
       for (let i = 0; i < 12; i++) {
         for (let j = 0; j < record.length; j++) {
           if (i == dayjs(record[j].createdAt).month() + 1) {
@@ -145,6 +157,55 @@ export default class StatisticsChart extends Vue {
     this.y = data;
   }
 
+  getTagMoney() {
+    function getMap(record: any) {
+      let map = new Map();
+      for (let i = 0; i < record.length; i++) {
+        if (!map.has(record[i].tag.name)) {
+          map.set(record[i].tag.name, record[i].amount);
+        } else {
+          const newValue = map.get(record[i].tag.name) + record[i].amount;
+          map.set(record[i].tag.name, newValue);
+        }
+      }
+      return map;
+    }
+    const recordList = this.$store.state.recordList;
+    if (this.ymw == "week") {
+      // 本周的各标签
+      const startDay = dayjs().startOf("week");
+      const record = recordList.filter((item: RecordItem) => {
+        return dayjs(item.createdAt) >= startDay && this.type == item.type;
+      });
+      this.tagList = getMap(record);
+    } else if (this.ymw == "month") {
+      // 本月的各标签
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).month() == dayjs().month() &&
+          this.type == item.type
+        );
+      });
+      this.tagList = getMap(record);
+    } else if (this.ymw == "year") {
+      //本年的各标签
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).year() == dayjs().year() &&
+          this.type == item.type
+        );
+      });
+      this.tagList = getMap(record);
+    }
+  }
+  // 获取每项所占百分比
+  getTotalMoney(money: number) {
+    let total = 0;
+    this.tagList.forEach((item: any) => {
+      total += item;
+    });
+    return ((money / total) * 100).toFixed(2) + "%";
+  }
   // 刷新图表
   draw() {
     const ele = document.getElementById("myEcharts");
@@ -195,22 +256,54 @@ export default class StatisticsChart extends Vue {
   changeX() {
     this.getXName();
     this.getTotal();
+    this.getTagMoney();
     this.draw();
   }
 
   @Watch("type")
   changeY() {
     this.getTotal();
+    this.getTagMoney();
     this.draw();
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.chart-title {
+.chart-title,
+.money-title {
   margin-top: 10px;
   padding: 6px 10px;
   width: 100vw;
   background-color: #eee;
+}
+.board {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  > .left {
+    display: flex;
+    text-align: center;
+    line-height: 40px;
+    .icon {
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 50%;
+      margin-right: 14px;
+    }
+    .name {
+      margin-right: 8px;
+    }
+    .percent {
+      font-size: 14px;
+    }
+  }
+  > .right {
+    font-size: 18px;
+  }
 }
 </style>

@@ -985,3 +985,115 @@ chart.setOption(option, notMerge, lazyUpdate);
   }
 ```
 
+3. 动态获取年月日数据
+
+```
+getTotal() {
+    let data: any[] = [];
+    const recordList = this.$store.state.recordList;
+
+    if (this.ymw == "week") {
+      // 当前选择为周
+      data = [0, 0, 0, 0, 0, 0, 0];
+      const startDay = dayjs().startOf("week");
+      const record = recordList.filter((item: RecordItem) => {
+        return dayjs(item.createdAt) >= startDay && this.type == item.type;
+      });
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < record.length; j++) {
+          if (i == dayjs(record[j].createdAt).day()) {
+            data[i] += record[j].amount;
+          }
+        }
+      }
+    } else if (this.ymw == "month") {
+      // 获取当前月
+      const day = dayjs().daysInMonth();
+      for (let i = 0; i < day; i++) {
+        data.push(0);
+      }
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs().month() == dayjs(item.createdAt).month() &&
+          this.type == item.type
+        );
+      });
+      for (let i = 0; i < day; i++) {
+        for (let j = 0; j < record.length; j++) {
+          if (i == dayjs(record[j].createdAt).date()) {
+            data[i] += record[j].amount;
+          }
+        }
+      }
+    } else if (this.ymw == "year") {
+      // 当前的选择是年
+      const year = dayjs().year();
+      for (let i = 0; i < 12; i++) {
+        data.push(0);
+      }
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs().year() == dayjs(item.createdAt).year() &&
+          this.type == item.type
+        );
+      });
+      console.log(record);
+      for (let i = 0; i < 12; i++) {
+        for (let j = 0; j < record.length; j++) {
+          if (i == dayjs(record[j].createdAt).month() + 1) {
+            data[i] += record[j].amount;
+          }
+        }
+      }
+    }
+    this.y = data;
+  }
+
+```
+
+4. 使用map动态获取tag以及对应的数据
+
+```
+getTagMoney() {
+    function getMap(record: any) {
+      let map = new Map();
+      for (let i = 0; i < record.length; i++) {
+        if (!map.has(record[i].tag.name)) {
+          map.set(record[i].tag.name, record[i].amount);
+        } else {
+          const newValue = map.get(record[i].tag.name) + record[i].amount;
+          map.set(record[i].tag.name, newValue);
+        }
+      }
+      return map;
+    }
+    const recordList = this.$store.state.recordList;
+    if (this.ymw == "week") {
+      // 本周的各标签
+      const startDay = dayjs().startOf("week");
+      const record = recordList.filter((item: RecordItem) => {
+        return dayjs(item.createdAt) >= startDay && this.type == item.type;
+      });
+      this.tagList = getMap(record);
+    } else if (this.ymw == "month") {
+      // 本月的各标签
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).month() == dayjs().month() &&
+          this.type == item.type
+        );
+      });
+      this.tagList = getMap(record);
+    } else if (this.ymw == "year") {
+      //本年的各标签
+      const record = recordList.filter((item: RecordItem) => {
+        return (
+          dayjs(item.createdAt).year() == dayjs().year() &&
+          this.type == item.type
+        );
+      });
+      this.tagList = getMap(record);
+    }
+  }
+```
+
