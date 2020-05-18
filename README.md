@@ -1052,6 +1052,10 @@ getTotal() {
 ```
 
 4. 使用map动态获取tag以及对应的数据
+   * v-for遍历map
+     * v-for="(tag,name) in tagList" 
+     * tag 是键和键值对的数组,name是index
+   * 
 
 ```
 getTagMoney() {

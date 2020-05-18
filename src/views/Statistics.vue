@@ -52,7 +52,7 @@ export default class Statistics extends Vue {
 
 .content {
   position: absolute;
-  top: 85px;
+  top: 95px;
   bottom: 54px;
   left: 0;
   right: 0;

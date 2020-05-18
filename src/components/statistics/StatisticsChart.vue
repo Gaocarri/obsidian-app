@@ -272,7 +272,6 @@ export default class StatisticsChart extends Vue {
 <style lang="scss" scoped>
 .chart-title,
 .money-title {
-  margin-top: 10px;
   padding: 6px 10px;
   width: 100vw;
   background-color: #eee;
