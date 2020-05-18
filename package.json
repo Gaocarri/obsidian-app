@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@types/better-scroll": "^1.12.1",
+    "@types/echarts": "^4.6.0",
     "better-scroll": "^1.15.2",
     "core-js": "^3.6.4",
     "dayjs": "^1.8.23",
+    "echarts": "^4.7.0",
     "register-service-worker": "^1.6.2",
     "svgo-loader": "^2.2.1",
     "vue": "^2.6.11",

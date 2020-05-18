@@ -824,3 +824,164 @@ export default class TagList extends Vue {
 
    * 其实就是在v-model后面加上.number和.trim修饰符
    * 两者缺一不可
+
+## Statistics界面
+
+1. 如何切换年月日以及支出收入
+
+* 子组件中
+
+```typescript
+  <ul>
+    <li @click="selectYmw('week')" :class="{'selected':ymw=='week'}">周</li>
+    <li class="middle-li" @click="selectYmw('month')" :class="{'selected':ymw=='month'}">月</li>
+    <li @click="selectYmw('year')" :class="{'selected':ymw=='year'}">年</li>
+  </ul>
+
+  selectYmw(ymw: string) {
+    if (this.ymw !== ymw) {
+      this.ymw = ymw;
+      this.$emit("selectYmw", ymw);
+    }
+  }
+```
+
+* 父组件中
+
+```vue
+<statistics-date @selectYmw="selectYmw" />
+<Scroll class="content"></Scroll>
+      
+  selectYmw(ymw: string) {
+    this.ymw = ymw;
+  }
+```
+
+* 这样就可以在首页获取所对应的年月日和支出收入了
+
+2. Vue+Ts使用echarts
+
+```
+<template>
+  <div id="myEcharts" style="width:100vw ;height:40vh;"></div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import "echarts/lib/chart/bar";
+
+@Component
+export default class StatisticsChart extends Vue {
+  mounted() {
+    const ele = document.getElementById("myEcharts");
+    const chart: any = this.$echarts.init(ele);
+    chart.setOption(this.options, true, false);
+  }
+  $echarts: any;
+get options() {
+    return {
+      xAxis: {
+        boundaryGap: false, // 两端间隔
+        splitLine: {
+          show: false // 每个端点的折线
+        },
+        type: "category", // 类目轴
+        axisTick: {
+          show: false
+        },
+        data: this.x // 横轴刻度名称
+      },
+      yAxis: {
+        show: false,
+        type: "value"
+      },
+      series: [
+        {
+          data: this.y, //这里我的数据对应月份的数据,请自行修改
+          itemStyle: {
+            normal: {
+              label: {
+                show: false,
+                position: "top"
+              }
+            }
+          },
+          type: "line",
+          stack: "总量",
+          // 径向渐变，前三个参数分别是圆心 x, y 和半径，取值同线性渐变
+          color: "#212943"
+        }
+      ]
+    };
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>
+```
+
+在动态渲染图表的时候我给组件声明了一个 Porp 从外部拿数据去实现**及时更新**，但是在外部数据改变的时候图表数据并没有更新
+
+后来我以为是 Vue 的**钩子时机问题**，试了很久问了其他人都没有结果，后来就想另辟蹊径看看是不是 **ECharts 的问题**，没想到去网上一搜还有不少人和我遇到了同样的问题
+
+原来不是 Vue 的错，而是 ECharts **默认渲染一次后就不会及时更新数据了，需要设置参数来唤醒它的及时更新**
+
+
+
+```text
+chart.setOption(option, notMerge, lazyUpdate);
+```
+
+问题的根源就在这句代码上
+
+- **option**： 是我们自己配置的 options
+- **notMerge（导致不能及时更新的关键参数）**：可选，这个参数意思就是当数据变化的时候，是否**不**跟之前设置的数据合并，这个参数默认为 **false**，也就是合并，把它改成 **true**，然后它就不会默认合并之前的数据了
+- **lazyUpdate**：可选，在设置完`option`后是否不立即更新图表，默认为**false**，即立即更新，这个设置 **false** 就行
+
+* 设置watch监听变化
+
+```
+  @Watch("ymw")
+  changeX() {
+    // 获取当前月份天数
+    const day = dayjs().daysInMonth();
+    let dayArray = [];
+    for (let i = 1; i <= day; i++) {
+      dayArray.push(i);
+    }
+    let data: string[] = [];
+    switch (this.ymw) {
+      case "week":
+        data = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+        break;
+      case "month":
+        data = dayArray.map(i => i + "日");
+        break;
+      case "year":
+        data = [
+          "一月",
+          "二月",
+          "三月",
+          "四月",
+          "五月",
+          "六月",
+          "七月",
+          "八月",
+          "九月",
+          "十月",
+          "十一月",
+          "十二月"
+        ];
+        break;
+      default:
+        data = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+    }
+    this.x = data;
+    const ele = document.getElementById("myEcharts");
+    const chart: any = this.$echarts.init(ele);
+    chart.setOption(this.options, true, false);
+  }
+```
+

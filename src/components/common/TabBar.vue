@@ -20,8 +20,10 @@ export default class extends Vue {
   type: string = "-";
 
   selectType(type: string) {
-    this.type = type;
-    this.$emit("selectType", type);
+    if (this.type !== type) {
+      this.type = type;
+      this.$emit("selectType", type);
+    }
   }
 }
 </script>

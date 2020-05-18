@@ -16,6 +16,7 @@ export default class NotFound extends Vue {}
 
 <style lang="scss" scoped>
 .content {
+  width: 80vw;
   margin: 240px auto;
   display: flex;
   flex-direction: column;
@@ -26,7 +27,7 @@ export default class NotFound extends Vue {}
   }
   .return {
     border: 1px solid #ccc;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     font-size: 18px;
     padding: 5px;

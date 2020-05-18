@@ -1,69 +1,10 @@
 <template>
   <div>
     <Layout>
-      <Tab-bar class="tab-bar" />
+      <Tab-bar class="tab-bar" @selectType="selectType" />
+      <statistics-date @selectYmw="selectYmw" />
       <Scroll class="content">
-        <ul>
-          <li>x</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>1</li>
-          <li>x</li>
-        </ul>
+        <statistics-chart :type="type" :ymw="ymw" />
       </Scroll>
     </Layout>
   </div>
@@ -76,13 +17,29 @@ import { Component } from "vue-property-decorator";
 import Scroll from "@/components/common/Scroll.vue";
 import TabBar from "@/components/common/TabBar.vue";
 
+import StatisticsDate from "@/components/statistics/StatisticsDate.vue";
+import StatisticsChart from "@/components/statistics/StatisticsChart.vue";
+
 @Component({
   components: {
     Scroll,
-    TabBar
+    TabBar,
+    StatisticsDate,
+    StatisticsChart
   }
 })
-export default class Statistics extends Vue {}
+export default class Statistics extends Vue {
+  type: string = "-";
+  ymw: string = "week";
+  // 选择支出和收入
+  selectType(type: string) {
+    this.type = type;
+  }
+  // 选择年月日
+  selectYmw(ymw: string) {
+    this.ymw = ymw;
+  }
+}
 </script>
 
 <style lang='scss' scoped>
@@ -95,7 +52,7 @@ export default class Statistics extends Vue {}
 
 .content {
   position: absolute;
-  top: 50px;
+  top: 85px;
   bottom: 54px;
   left: 0;
   right: 0;
