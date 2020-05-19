@@ -70,7 +70,7 @@ export default class StatisticsChart extends Vue {
     let data: string[] = [];
     switch (this.ymw) {
       case "week":
-        data = ["周日", "周二", "周三", "周四", "周五", "周六", "周一"];
+        data = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
         break;
       case "month":
         data = dayArray.map(i => i + "日");
@@ -92,7 +92,7 @@ export default class StatisticsChart extends Vue {
         ];
         break;
       default:
-        data = ["周日", "周二", "周三", "周四", "周五", "周六", "周一"];
+        data = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
     }
     this.x = data;
   }
@@ -129,7 +129,7 @@ export default class StatisticsChart extends Vue {
       });
       for (let i = 0; i < day; i++) {
         for (let j = 0; j < record.length; j++) {
-          if (i == dayjs(record[j].createdAt).date()) {
+          if (i == dayjs(record[j].createdAt).date() - 1) {
             data[i] += record[j].amount;
           }
         }
@@ -148,7 +148,7 @@ export default class StatisticsChart extends Vue {
       });
       for (let i = 0; i < 12; i++) {
         for (let j = 0; j < record.length; j++) {
-          if (i == dayjs(record[j].createdAt).month() + 1) {
+          if (i == dayjs(record[j].createdAt).month()) {
             data[i] += record[j].amount;
           }
         }
