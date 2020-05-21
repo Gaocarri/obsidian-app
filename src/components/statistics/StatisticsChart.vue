@@ -32,14 +32,10 @@ export default class StatisticsChart extends Vue {
     this.$store.commit("fetchRecords");
   }
   mounted() {
-    this.getTotal();
-    this.getXName();
     this.getTagMoney();
     this.draw();
   }
 
-  x: any[] = [];
-  y: any[] = [];
   // 标签对应价格
   tagList: any = {};
   get chartTitle() {
@@ -60,7 +56,7 @@ export default class StatisticsChart extends Vue {
   }
 
   // 获取横坐标名称
-  getXName() {
+  get x() {
     // 获取当前月份天数
     const day = dayjs().daysInMonth();
     let dayArray = [];
@@ -94,10 +90,11 @@ export default class StatisticsChart extends Vue {
       default:
         data = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
     }
-    this.x = data;
+    return data;
   }
   // 获取纵坐标数值
-  getTotal() {
+  get y() {
+    console.log("y");
     let data: any[] = [];
     const recordList = this.$store.state.recordList;
 
@@ -154,7 +151,7 @@ export default class StatisticsChart extends Vue {
         }
       }
     }
-    this.y = data;
+    return data;
   }
 
   getTagMoney() {
@@ -210,7 +207,7 @@ export default class StatisticsChart extends Vue {
   draw() {
     const ele = document.getElementById("myEcharts");
     const chart: any = this.$echarts.init(ele);
-    chart.setOption(this.options, true, false);
+    chart.setOption(this.options, false, false);
   }
 
   // echarts选项
@@ -254,15 +251,12 @@ export default class StatisticsChart extends Vue {
 
   @Watch("ymw")
   changeX() {
-    this.getXName();
-    this.getTotal();
     this.getTagMoney();
     this.draw();
   }
 
   @Watch("type")
   changeY() {
-    this.getTotal();
     this.getTagMoney();
     this.draw();
   }
