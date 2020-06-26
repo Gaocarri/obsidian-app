@@ -17,7 +17,12 @@ export default {
     };
   },
   mounted() {
-    if (document.documentElement.clientWidth > 500) {
+    if (
+      document.documentElement.clientWidth > 500 ||
+      /Android|webOS|iPhone|iPad|iPod|ucweb|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
       this.showQrCode = true;
     }
     // 初始化六个标签
