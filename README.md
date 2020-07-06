@@ -1,5 +1,6 @@
 # 黑曜石记账
 一款基于 Vue / TypeScript完成的移动端网页记账SPA应用。
+
 使用技术:Vue， VueCli，Vuex，VueRouter，TypeScript，SCSS，ECharts， LocalStorage，dayjs， better-scroll
 
 特点：
