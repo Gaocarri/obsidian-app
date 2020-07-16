@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import "echarts/lib/chart/bar";
+import "echarts";
 
 import dayjs from "dayjs";
 
